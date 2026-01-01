@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
 """
-Weather Update Script for France Trip Map
-Fetches weather data from Open-Meteo API and updates index.html
+Weather Update Script for France Trip Map (v2.0 - Hourly Data)
+Fetches HOURLY weather data from Open-Meteo API and updates index.html
 
-This script is run by GitHub Actions every 6 hours to keep
-the weather data fresh for the interactive map.
+Key changes from v1:
+- Uses hourly API instead of daily
+- Stores 24 hourly temps per city per day
+- JavaScript can calculate arrival temps based on user-selected departure time
+- Keeps overnightLow for regel (black ice) warnings
 """
 
 import json
@@ -35,16 +38,17 @@ TARGET_DATES = [
 DAY_KEYS = ["jan3", "jan4", "jan5", "jan6", "jan7", "jan8", "jan9", "jan10"]
 
 
-def fetch_weather(city_key: str) -> dict:
-    """Fetch weather data for a city from Open-Meteo API."""
+def fetch_hourly_weather(city_key: str) -> dict:
+    """Fetch HOURLY weather data for a city from Open-Meteo API."""
     city = CITIES[city_key]
     
     url = "https://api.open-meteo.com/v1/forecast"
     params = {
         "latitude": city["lat"],
         "longitude": city["lon"],
-        "daily": "temperature_2m_max,temperature_2m_min,precipitation_sum,snowfall_sum",
-        "timezone": "Europe/Paris",
+        "hourly": "temperature_2m,precipitation,snowfall",
+        "daily": "precipitation_sum,snowfall_sum",  # Keep daily totals for snow/precip
+        "timezone": "Europe/Paris",  # Critical: always use Paris timezone
         "start_date": TARGET_DATES[0],
         "end_date": TARGET_DATES[-1],
     }
@@ -54,95 +58,90 @@ def fetch_weather(city_key: str) -> dict:
     return response.json()
 
 
-def calculate_risk(high: float, low: float, snow: float, precip: float) -> tuple:
+def extract_day_data(hourly_data: dict, daily_data: dict, day_index: int) -> dict:
     """
-    Calculate risk level based on weather conditions.
-    Returns (risk_level, risk_label) tuple.
+    Extract data for a single day from the hourly API response.
     
-    Risk factors:
-    - Freezing temps (< 0°C overnight)
-    - Snow accumulation
-    - Rain + freeze = black ice (verglas)
+    Returns:
+        {
+            "hourly": [temp_00, temp_01, ..., temp_23],  # 24 hourly temps
+            "overnightLow": float,  # Min temp from 00:00-06:00 (for regel warning)
+            "dailyHigh": float,     # Max temp of day (for display)
+            "dailyLow": float,      # Min temp of day (for display)
+            "snow": float,          # Daily snow total
+            "precip": float         # Daily precipitation total
+        }
     """
-    # Safe conditions: no freezing, no snow
-    if low > 2 and snow == 0:
-        if high > 8:
-            return ("safe", "Parfait")
-        return ("safe", "Pas de gel")
+    # Hourly data is indexed: day 0 = hours 0-23, day 1 = hours 24-47, etc.
+    start_hour = day_index * 24
+    end_hour = start_hour + 24
     
-    # Caution: light frost
-    if low > -1 and snow == 0:
-        return ("caution", f"Gel léger")
+    hourly_temps = hourly_data["temperature_2m"][start_hour:end_hour]
     
-    # Danger conditions
-    if snow > 5:
-        return ("danger", f"NEIGE {snow}cm!")
-    elif snow > 2:
-        return ("danger", f"NEIGE {snow}cm")
-    elif snow > 0:
-        return ("danger", f"NEIGE {snow}cm")
+    # Round all temps to 1 decimal
+    hourly_temps = [round(t, 1) if t is not None else None for t in hourly_temps]
     
-    # Regel (refreeze) danger: warm day followed by freezing night
-    if high > 8 and low < -2:
-        return ("danger", f"REGEL {low}°C!")
+    # Overnight low: minimum temp from midnight to 6am (hours 0-5)
+    overnight_temps = hourly_temps[0:6]
+    overnight_low = min([t for t in overnight_temps if t is not None], default=None)
     
-    # Rain + freeze = verglas
-    if precip > 0 and low < 0:
-        if low < -3:
-            return ("danger", "VERGLAS!")
-        return ("danger", f"Pluie + gel")
+    # Daily high/low for display
+    valid_temps = [t for t in hourly_temps if t is not None]
+    daily_high = max(valid_temps) if valid_temps else None
+    daily_low = min(valid_temps) if valid_temps else None
     
-    # Severe frost
-    if low < -4:
-        return ("danger", f"Gel SÉVÈRE {low}°C")
-    elif low < -1:
-        return ("danger", f"Gel {low}°C")
+    # Snow and precipitation from daily data
+    snow = daily_data["snowfall_sum"][day_index]
+    snow = round(snow, 1) if snow is not None else 0
     
-    return ("caution", "Prudence")
+    precip = daily_data["precipitation_sum"][day_index]
+    precip = round(precip, 1) if precip is not None else 0
+    
+    return {
+        "hourly": hourly_temps,
+        "overnightLow": overnight_low,
+        "dailyHigh": daily_high,
+        "dailyLow": daily_low,
+        "snow": snow,
+        "precip": precip
+    }
 
 
 def build_weather_data() -> dict:
-    """Fetch weather for all cities and build the weatherData object."""
+    """Fetch hourly weather for all cities and build the weatherData object."""
     weather_data = {}
     
     for day_key in DAY_KEYS:
         weather_data[day_key] = {}
     
     for city_key in CITIES:
-        print(f"Fetching weather for {city_key}...")
+        print(f"Fetching hourly weather for {city_key}...")
         try:
-            data = fetch_weather(city_key)
+            data = fetch_hourly_weather(city_key)
+            hourly = data["hourly"]
             daily = data["daily"]
             
             for i, date in enumerate(TARGET_DATES):
                 day_key = DAY_KEYS[i]
-                
-                high = round(daily["temperature_2m_max"][i], 1)
-                low = round(daily["temperature_2m_min"][i], 1)
-                precip = round(daily["precipitation_sum"][i], 1) if daily["precipitation_sum"][i] else 0
-                snow = round(daily["snowfall_sum"][i], 1) if daily["snowfall_sum"][i] else 0
-                
-                risk, risk_label = calculate_risk(high, low, snow, precip)
-                
-                weather_data[day_key][city_key] = {
-                    "high": high,
-                    "low": low,
-                    "precip": precip,
-                    "snow": snow,
-                    "risk": risk,
-                    "riskLabel": risk_label
-                }
+                day_data = extract_day_data(hourly, daily, i)
+                weather_data[day_key][city_key] = day_data
                 
         except Exception as e:
             print(f"Error fetching {city_key}: {e}")
-            # Keep existing data if fetch fails
             continue
     
     return weather_data
 
 
+def format_hourly_array(temps: list) -> str:
+    """Format hourly temps array as compact JavaScript."""
+    # Replace None with null for JavaScript
+    formatted = [str(t) if t is not None else "null" for t in temps]
+    return "[" + ",".join(formatted) + "]"
+
+
 def format_weather_js(weather_data: dict) -> str:
-    """Format weather data as JavaScript object literal."""
+    """Format weather data as JavaScript object literal with hourly data."""
     lines = ["        const weatherData = {"]
     
     for day_key in DAY_KEYS:
@@ -150,11 +149,17 @@ def format_weather_js(weather_data: dict) -> str:
         
         city_lines = []
         for city_key, data in weather_data[day_key].items():
+            hourly_str = format_hourly_array(data["hourly"])
+            overnight = data["overnightLow"] if data["overnightLow"] is not None else "null"
+            high = data["dailyHigh"] if data["dailyHigh"] is not None else "null"
+            low = data["dailyLow"] if data["dailyLow"] is not None else "null"
+            
             city_line = (
                 f'                {city_key}: {{ '
-                f'high: {data["high"]}, low: {data["low"]}, '
-                f'precip: {data["precip"]}, snow: {data["snow"]}, '
-                f'risk: "{data["risk"]}", riskLabel: "{data["riskLabel"]}" }}'
+                f'hourly: {hourly_str}, '
+                f'overnightLow: {overnight}, '
+                f'dailyHigh: {high}, dailyLow: {low}, '
+                f'snow: {data["snow"]}, precip: {data["precip"]} }}'
             )
             city_lines.append(city_line)
         
@@ -194,14 +199,14 @@ def update_html(weather_data: dict):
 
 def main():
     print("=" * 50)
-    print("Weather Update Script")
+    print("Weather Update Script v2.0 (Hourly Data)")
     print("=" * 50)
     
     weather_data = build_weather_data()
     
     if weather_data and all(weather_data[day] for day in DAY_KEYS):
         update_html(weather_data)
-        print("✅ Weather data updated successfully!")
+        print("✅ Hourly weather data updated successfully!")
     else:
         print("❌ Failed to fetch complete weather data")
         exit(1)
