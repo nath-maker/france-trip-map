@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trajet Loctudy - Ambleville | Janvier 2026</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        /* L'atelier Style Guide v3.0 - Dual Font Typography */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #ffffff; color: #333; line-height: 1.6; font-size: 14px;
+        }
+        .header { padding: 32px 48px; border-bottom: 1px solid #e0e0e0; background: #fff; }
+        .header h1 {
+            font-family: 'Montserrat', sans-serif; font-size: 15.5px; font-weight: 600;
+            letter-spacing: 4px; text-transform: uppercase; color: #333;
+        }
+        .header .subtitle { font-family: 'Segoe UI', sans-serif; font-size: 14px; color: #666; margin-top: 8px; }
+        #map { height: 55vh; width: 100%; border-bottom: 1px solid #e0e0e0; }
+        .day-selector { background: #fafafa; padding: 24px 48px; border-bottom: 1px solid #e0e0e0; }
+        .day-selector h3 {
+            font-family: 'Montserrat', sans-serif; font-size: 10.5px; text-transform: uppercase;
+            letter-spacing: 1.5px; color: #777; margin-bottom: 16px; font-weight: 500;
+        }
+        .day-buttons { display: flex; flex-wrap: wrap; gap: 12px; }
+        .day-btn {
+            padding: 14px 20px; border: 1px solid #e0e0e0; border-radius: 6px; background: white;
+            cursor: pointer; font-family: 'Montserrat', sans-serif; font-size: 13.5px;
+            transition: all 0.2s; text-align: center; min-width: 90px; box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+        }
+        .day-btn:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .day-btn.active { border-color: #333; background: #333; color: white; }
+        .day-btn.safe { border-left: 3px solid #28a745; }
+        .day-btn.safe.active { background: #28a745; border-color: #28a745; color: white; }
+        .day-btn.danger { border-left: 3px solid #dc3545; }
+        .day-btn.danger.active { background: #dc3545; border-color: #dc3545; color: white; }
+        .day-btn.caution { border-left: 3px solid #ffc107; }
+        .day-btn.caution.active { background: #ffc107; border-color: #ffc107; color: #333; }
+        .day-btn .day-name { font-family: 'Montserrat', sans-serif; font-weight: 600; color: #333; font-size: 13.5px; }
+        .day-btn.active .day-name { color: inherit; }
+        .day-btn .day-status {
+            font-family: 'Montserrat', sans-serif; font-size: 10.5px; text-transform: uppercase;
+            letter-spacing: 1px; margin-top: 4px; color: #777;
+        }
+        .day-btn.active .day-status { color: inherit; opacity: 0.9; }
+        .day-info {
+            padding: 20px 48px; font-family: 'Segoe UI', sans-serif; font-size: 14px;
+            color: #666; line-height: 1.6; background: #fafafa; border-left: 4px solid #17a2b8;
+        }
+        .day-info.safe { border-left-color: #28a745; }
+        .day-info.danger { border-left-color: #dc3545; }
+        .day-info.caution { border-left-color: #ffc107; }
+        .day-info strong { color: #333; }
+        .legend { background: white; padding: 24px 48px; border-top: 1px solid #e0e0e0; }
+        .legend h3 {
+            font-family: 'Montserrat', sans-serif; font-size: 10.5px; text-transform: uppercase;
+            letter-spacing: 1.5px; color: #777; margin-bottom: 16px; font-weight: 500;
+        }
+        .legend-item {
+            display: flex; align-items: center; margin-bottom: 12px;
+            font-family: 'Segoe UI', sans-serif; font-size: 14px; color: #666;
+        }
+        .legend-line { width: 40px; height: 4px; margin-right: 14px; border-radius: 2px; }
+        .route-cancale { background: #17a2b8; }
+        .route-direct { background: #28a745; }
+        .leaflet-popup-content { margin: 14px 18px; min-width: 200px; font-family: 'Segoe UI', sans-serif; }
+        .popup-title { font-family: 'Montserrat', sans-serif; font-size: 13.5px; font-weight: 600; color: #333; margin-bottom: 4px; }
+        .popup-date { font-family: 'Segoe UI', sans-serif; font-size: 12px; color: #888; margin-bottom: 10px; }
+        .popup-weather { padding-top: 10px; border-top: 1px dashed #e0e0e0; }
+        .popup-temp { font-family: 'Montserrat', sans-serif; font-size: 13.5px; font-weight: 600; }
+        .popup-temp.safe { color: #28a745; }
+        .popup-temp.caution { color: #e6a000; }
+        .popup-temp.danger { color: #dc3545; }
+        .popup-risk {
+            margin-top: 10px; display: inline-block; font-family: 'Montserrat', sans-serif;
+            font-size: 10.5px; padding: 4px 10px; border-radius: 4px; font-weight: 500;
+            text-transform: uppercase; letter-spacing: 1px; background: transparent; border: 2px solid #ddd; color: #777;
+        }
+        .popup-risk.safe { border-color: #28a745; color: #28a745; }
+        .popup-risk.caution { border-color: #e6a000; color: #856404; }
+        .popup-risk.danger { border-color: #dc3545; color: #dc3545; }
+        .popup-snow { margin-top: 8px; font-family: 'Segoe UI', sans-serif; font-size: 12px; color: #17a2b8; font-weight: 500; }
+        .footer {
+            padding: 24px 48px; border-top: 1px solid #e0e0e0; text-align: center;
+            font-family: 'Segoe UI', sans-serif; font-size: 12px; color: #888;
+        }
+        .footer a { color: #17a2b8; text-decoration: none; font-weight: 500; }
+        .footer a:hover { text-decoration: underline; }
+        .message-section { background: white; padding: 32px 48px; border-bottom: 1px solid #e0e0e0; }
+        .toggle-message {
+            display: inline-block; font-family: 'Montserrat', sans-serif; font-size: 10.5px;
+            padding: 10px 20px; border-radius: 4px; font-weight: 500; text-transform: uppercase;
+            letter-spacing: 1px; background: transparent; color: #777; border: 2px solid #ddd;
+            cursor: pointer; margin-bottom: 24px; transition: all 0.2s;
+        }
+        .toggle-message:hover { border-color: #333; color: #333; }
+        .message-content { display: block; }
+        .message-content.hidden { display: none; }
+        .message-content h2 { font-family: 'Montserrat', sans-serif; font-size: 13.5px; font-weight: 600; color: #333; margin-bottom: 20px; }
+        .message-content h3 {
+            font-family: 'Montserrat', sans-serif; font-size: 11px; text-transform: uppercase;
+            letter-spacing: 1.5px; color: #777; margin: 36px 0 16px 0; padding-bottom: 10px;
+            border-bottom: 1px dashed #e0e0e0; font-weight: 500;
+        }
+        .message-content h3.danger-title { color: #dc3545; }
+        .message-content h4 { font-family: 'Montserrat', sans-serif; font-size: 13.5px; font-weight: 600; color: #333; margin: 24px 0 14px 0; }
+        .message-content p { margin-bottom: 14px; line-height: 1.7; font-family: 'Segoe UI', sans-serif; font-size: 14px; color: #666; }
+        .message-content .highlight { background: #fafafa; padding: 3px 8px; border-radius: 4px; border: 1px solid #e0e0e0; }
+        .message-content .danger-text { color: #dc3545; font-weight: 600; }
+        .message-content .safe-text { color: #28a745; font-weight: 600; }
+        .message-content ol, .message-content ul { margin: 14px 0 18px 28px; font-family: 'Segoe UI', sans-serif; font-size: 14px; color: #666; line-height: 1.8; }
+        .message-content li { margin-bottom: 6px; }
+        .message-content a { color: #17a2b8; font-weight: 500; }
+        .callout {
+            background: #fafafa; border-left: 4px solid #17a2b8; padding: 24px 28px;
+            font-family: 'Segoe UI', sans-serif; font-size: 14px; color: #666; line-height: 1.7; margin: 24px 0;
+        }
+        .callout strong { color: #333; }
+        .callout.warning { border-left-color: #ffc107; }
+        .summary-table { width: 100%; border-collapse: collapse; margin: 20px 0; font-family: 'Segoe UI', sans-serif; font-size: 14px; }
+        .summary-table th {
+            font-family: 'Montserrat', sans-serif; font-size: 10.5px; text-transform: uppercase;
+            letter-spacing: 1px; color: #777; background: #fafafa; padding: 14px; text-align: left;
+            border-bottom: 1px solid #e0e0e0; font-weight: 500;
+        }
+        .summary-table td { padding: 14px; border-bottom: 1px solid #e0e0e0; color: #666; }
+        .summary-table tr.safe td { border-left: 4px solid #28a745; }
+        .summary-table tr.danger td { border-left: 4px solid #dc3545; }
+        .summary-table tr.caution td { border-left: 4px solid #ffc107; }
+        .signature {
+            margin-top: 36px; padding-top: 28px; border-top: 1px dashed #e0e0e0;
+            font-family: 'Segoe UI', sans-serif; font-size: 12px; color: #888; font-style: italic;
+        }
+        .signature p { color: #888; font-size: 12px; margin-bottom: 8px; }
+        @media (max-width: 600px) {
+            .header, .day-selector, .legend, .footer, .message-section, .day-info { padding-left: 20px; padding-right: 20px; }
+            #map { height: 45vh; }
+            .header h1 { font-size: 14px; letter-spacing: 3px; }
+            .header .subtitle { font-size: 12px; }
+            .day-btn { padding: 12px 14px; min-width: 75px; font-size: 12px; }
+            .day-btn .day-name { font-size: 12px; }
+            .day-btn .day-status { font-size: 9px; }
+            .day-info { font-size: 13px; }
+            .message-content h2 { font-size: 12px; }
+            .message-content h3 { font-size: 10px; }
+            .message-content p, .message-content ol, .message-content ul { font-size: 13px; }
+            .callout { padding: 18px 22px; font-size: 13px; }
+            .summary-table { font-size: 12px; }
+            .summary-table th { font-size: 9px; }
+            .summary-table th, .summary-table td { padding: 10px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Trajet Loctudy - Paris</h1>
+        <div class="subtitle">Janvier 2026 - Guide de voyage hivernal préparé par Nathalie</div>
+    </div>
+
+    <div class="message-section">
+        <button class="toggle-message" onclick="toggleMessage()">Afficher / Masquer le message</button>
+        <div class="message-content" id="messageContent">
+            <h2>Cher Papa,</h2>
+            <p>Je suis Claude, l'assistant IA de Nathalie - et comme toi, je m'appelle Claude! Elle m'a demandé de t'aider à planifier ton trajet en toute sécurité.</p>
+            <h3 class="danger-title">Le Danger Principal: Le Regel</h3>
+            <p>Tu as <strong>tout à fait raison</strong> de t'inquiéter du <span class="highlight">regel</span> (pluie ou neige suivie de gel).</p>
+            <h3>Mes Recommandations</h3>
+            <table class="summary-table">
+                <thead><tr><th>Date de départ</th><th>Verdict</th><th>Pourquoi</th></tr></thead>
+                <tbody>
+                    <tr class="safe"><td><strong>3 janvier, 11h</strong></td><td class="safe-text">RECOMMANDÉ</td><td>Dernière fenêtre AVANT la vague de froid.</td></tr>
+                    <tr class="danger"><td>4-7 janvier</td><td class="danger-text">NE PAS PARTIR</td><td>Vague de froid, neige, gel jusqu'à -6°C</td></tr>
+                    <tr class="danger"><td>8 janvier</td><td class="danger-text">PIÈGE!</td><td>Journée chaude MAIS regel nocturne sévère</td></tr>
+                    <tr class="safe"><td><strong>9 janvier, 14h+</strong></td><td class="safe-text">POSSIBLE</td><td>Routes réchauffées par le soleil</td></tr>
+                    <tr class="safe"><td><strong>10 janvier</strong></td><td class="safe-text">IDÉAL</td><td>Pas de gel nocturne, conditions parfaites</td></tr>
+                </tbody>
+            </table>
+            <h3>Avant de partir</h3>
+            <p>Consulte ces sites le matin du départ:</p>
+            <ul>
+                <li><a href="https://vigilance.meteofrance.fr" target="_blank">Vigilance Météo France</a></li>
+                <li><a href="https://www.bison-fute.gouv.fr" target="_blank">Bison Futé</a></li>
+            </ul>
+            <div class="signature">
+                <p>Bon voyage! Nathalie t'aime très fort.</p>
+                <p id="lastUpdated" style="font-size: 10px; color: #999; margin-top: 12px;">Données météo mises à jour automatiquement | Source: API Open-Meteo</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="day-selector">
+        <h3>Sélectionnez un jour de départ</h3>
+        <div class="day-buttons" id="dayButtons"></div>
+    </div>
+
+    <div class="day-info safe" id="dayInfo">
+        <strong>3 janvier:</strong> RECOMMANDÉ - Partir vers 11h, route directe vers Paris.
+    </div>
+
+    <div id="map"></div>
+
+    <div class="legend">
+        <h3>Routes</h3>
+        <div class="legend-item"><div class="legend-line route-cancale"></div><span><strong>Option A:</strong> Via Cancale (2 jours, 600 km)</span></div>
+        <div class="legend-item"><div class="legend-line route-direct"></div><span><strong>Option B:</strong> Direct via Rennes-Le Mans (1 jour, 580 km)</span></div>
+    </div>
+
+    <div class="footer">
+        Sources: Open-Meteo API, Météo France, Bison Futé |
+        <a href="https://vigilance.meteofrance.fr" target="_blank">Vérifier vigilance</a> |
+        <a href="https://www.bison-fute.gouv.fr" target="_blank">Conditions routières</a>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // AUTO-UPDATED BY GITHUB ACTIONS - DO NOT EDIT MANUALLY
+        // WEATHER_DATA_START
+        const weatherData = {
+            "jan3": {
+                loctudy: { high: 6.0, low: -0.3, precip: 0, snow: 0, risk: "safe", riskLabel: "Départ 11h OK" },
+                quimper: { high: 5.8, low: -0.5, precip: 0, snow: 0, risk: "safe", riskLabel: "Départ 11h OK" },
+                rennes: { high: 4.7, low: -2.6, precip: 0.8, snow: 0, risk: "safe", riskLabel: "Départ 11h OK" },
+                cancale: { high: 6.9, low: 1.3, precip: 0.4, snow: 0, risk: "safe", riskLabel: "Départ 11h OK" },
+                avranches: { high: 4.1, low: -1.5, precip: 0, snow: 0, risk: "safe", riskLabel: "Départ 11h OK" },
+                caen: { high: 5.0, low: 0.6, precip: 0, snow: 0, risk: "safe", riskLabel: "Départ 11h OK" },
+                leMans: { high: 4.5, low: -1.5, precip: 0, snow: 0, risk: "safe", riskLabel: "Départ 11h OK" },
+                rouen: { high: 3.7, low: -1.1, precip: 0, snow: 0, risk: "safe", riskLabel: "Départ 11h OK" },
+                paris: { high: 4.0, low: -1.0, precip: 0, snow: 0, risk: "safe", riskLabel: "Départ 11h OK" },
+                ambleville: { high: 2.9, low: -3.1, precip: 0, snow: 0, risk: "caution", riskLabel: "Gel -3°C nuit" }
+            },
+            "jan4": {
+                loctudy: { high: 5.8, low: -1.4, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel -1°C" },
+                quimper: { high: 5.0, low: -1.8, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel -2°C" },
+                rennes: { high: 3.9, low: -3.8, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel SÉVÈRE -4°C" },
+                cancale: { high: 4.7, low: -0.3, precip: 0, snow: 0, risk: "caution", riskLabel: "Gel léger" },
+                avranches: { high: 2.7, low: -4.2, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel SÉVÈRE -4°C" },
+                caen: { high: 3.9, low: -1.0, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel -1°C" },
+                leMans: { high: 3.5, low: -3.5, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel -4°C" },
+                rouen: { high: 2.7, low: -3.1, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel SÉVÈRE -3°C" },
+                paris: { high: 3.0, low: -3.0, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel -3°C" },
+                ambleville: { high: 2.1, low: -4.4, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel SÉVÈRE -4°C" }
+            },
+            "jan5": {
+                loctudy: { high: 7.1, low: -1.4, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel nocturne" },
+                quimper: { high: 6.5, low: -1.5, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel nocturne" },
+                rennes: { high: 0.7, low: -4.2, precip: 2.4, snow: 1.7, risk: "danger", riskLabel: "NEIGE 1.7cm" },
+                cancale: { high: 0.5, low: -1.8, precip: 1.8, snow: 1.3, risk: "danger", riskLabel: "NEIGE 1.3cm" },
+                avranches: { high: -0.5, low: -5.6, precip: 9.6, snow: 6.7, risk: "danger", riskLabel: "NEIGE 6.7cm!" },
+                caen: { high: 1.2, low: -1.6, precip: 4.8, snow: 2.5, risk: "danger", riskLabel: "NEIGE 2.5cm" },
+                leMans: { high: 1.0, low: -3.5, precip: 3.0, snow: 2.0, risk: "danger", riskLabel: "NEIGE 2cm" },
+                rouen: { high: 1.1, low: -2.9, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel -3°C" },
+                paris: { high: 1.5, low: -3.0, precip: 1.0, snow: 0.5, risk: "danger", riskLabel: "Neige possible" },
+                ambleville: { high: -0.4, low: -3.8, precip: 1.2, snow: 0.8, risk: "danger", riskLabel: "NEIGE + gel" }
+            },
+            "jan6": {
+                loctudy: { high: 3.5, low: -0.5, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel nocturne" },
+                quimper: { high: 3.0, low: -0.8, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel nocturne" },
+                rennes: { high: 1.8, low: -3.8, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel -4°C" },
+                cancale: { high: 2.6, low: -2.3, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel -2°C" },
+                avranches: { high: 1.9, low: -6.3, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel SÉVÈRE -6°C" },
+                caen: { high: 1.4, low: -3.4, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel -3°C" },
+                leMans: { high: 1.5, low: -4.0, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel -4°C" },
+                rouen: { high: 0.5, low: -4.9, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel SÉVÈRE -5°C" },
+                paris: { high: 0.8, low: -4.5, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel SÉVÈRE -5°C" },
+                ambleville: { high: 0.3, low: -4.4, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel SÉVÈRE -4°C" }
+            },
+            "jan7": {
+                loctudy: { high: 6.1, low: -2.1, precip: 3.6, snow: 0, risk: "danger", riskLabel: "Pluie + gel" },
+                quimper: { high: 5.5, low: -2.5, precip: 3.0, snow: 0, risk: "danger", riskLabel: "Pluie + gel" },
+                rennes: { high: 0.3, low: -6.2, precip: 3.6, snow: 2.5, risk: "danger", riskLabel: "NEIGE 2.5cm" },
+                cancale: { high: 0.2, low: -5.6, precip: 4.8, snow: 3.4, risk: "danger", riskLabel: "NEIGE 3.4cm" },
+                avranches: { high: -0.7, low: -6.3, precip: 4.8, snow: 3.4, risk: "danger", riskLabel: "NEIGE 3.4cm" },
+                caen: { high: 1.5, low: -4.1, precip: 2.4, snow: 1.7, risk: "danger", riskLabel: "NEIGE 1.7cm" },
+                leMans: { high: 0.5, low: -5.0, precip: 3.0, snow: 2.0, risk: "danger", riskLabel: "NEIGE 2cm" },
+                rouen: { high: 0.8, low: -5.4, precip: 3.6, snow: 1.7, risk: "danger", riskLabel: "NEIGE 1.7cm" },
+                paris: { high: 0.5, low: -5.0, precip: 2.5, snow: 1.5, risk: "danger", riskLabel: "NEIGE + gel" },
+                ambleville: { high: -0.8, low: -5.5, precip: 1.4, snow: 1.0, risk: "danger", riskLabel: "NEIGE + gel" }
+            },
+            "jan8": {
+                loctudy: { high: 12.5, low: 1.6, precip: 0, snow: 0, risk: "safe", riskLabel: "Journée OK" },
+                quimper: { high: 12.0, low: 1.2, precip: 0, snow: 0, risk: "safe", riskLabel: "Journée OK" },
+                rennes: { high: 10.9, low: -5.5, precip: 0, snow: 0, risk: "danger", riskLabel: "REGEL -6°C!" },
+                cancale: { high: 10.7, low: -3.9, precip: 0, snow: 0, risk: "danger", riskLabel: "REGEL -4°C!" },
+                avranches: { high: 10.2, low: -4.5, precip: 0, snow: 0, risk: "danger", riskLabel: "REGEL -5°C!" },
+                caen: { high: 10.9, low: -2.4, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel -2°C nuit" },
+                leMans: { high: 10.5, low: -3.5, precip: 0, snow: 0, risk: "danger", riskLabel: "REGEL -4°C!" },
+                rouen: { high: 9.8, low: -5.8, precip: 0, snow: 0, risk: "danger", riskLabel: "REGEL -6°C!" },
+                paris: { high: 9.5, low: -4.0, precip: 0, snow: 0, risk: "danger", riskLabel: "REGEL -4°C!" },
+                ambleville: { high: 7.9, low: -3.9, precip: 1.0, snow: 0.7, risk: "danger", riskLabel: "VERGLAS!" }
+            },
+            "jan9": {
+                loctudy: { high: 12.1, low: 8.1, precip: 1.2, snow: 0, risk: "safe", riskLabel: "Pas de gel" },
+                quimper: { high: 11.5, low: 7.8, precip: 1.0, snow: 0, risk: "safe", riskLabel: "Pas de gel" },
+                rennes: { high: 11.8, low: 5.3, precip: 1.2, snow: 0, risk: "safe", riskLabel: "Pas de gel" },
+                cancale: { high: 11.0, low: 7.4, precip: 3.1, snow: 0, risk: "safe", riskLabel: "Pas de gel" },
+                avranches: { high: 10.3, low: 5.8, precip: 4.3, snow: 0, risk: "safe", riskLabel: "Pas de gel" },
+                caen: { high: 11.0, low: 4.9, precip: 1.2, snow: 0, risk: "safe", riskLabel: "Pas de gel" },
+                leMans: { high: 10.5, low: 5.5, precip: 1.0, snow: 0, risk: "safe", riskLabel: "Pas de gel" },
+                rouen: { high: 11.1, low: 4.5, precip: 1.2, snow: 0, risk: "safe", riskLabel: "Pas de gel" },
+                paris: { high: 10.0, low: 5.0, precip: 0.5, snow: 0, risk: "safe", riskLabel: "Pas de gel" },
+                ambleville: { high: 9.6, low: 4.1, precip: 0, snow: 0, risk: "safe", riskLabel: "Pas de gel" }
+            },
+            "jan10": {
+                loctudy: { high: 9.1, low: 5.9, precip: 1.2, snow: 0, risk: "safe", riskLabel: "Parfait" },
+                quimper: { high: 9.0, low: 5.5, precip: 1.0, snow: 0, risk: "safe", riskLabel: "Parfait" },
+                rennes: { high: 7.0, low: 3.4, precip: 1.2, snow: 0, risk: "safe", riskLabel: "Parfait" },
+                cancale: { high: 7.8, low: 4.9, precip: 4.1, snow: 0, risk: "safe", riskLabel: "Parfait" },
+                avranches: { high: 6.8, low: 2.7, precip: 4.1, snow: 0, risk: "safe", riskLabel: "Parfait" },
+                caen: { high: 5.6, low: 3.4, precip: 4.8, snow: 0, risk: "safe", riskLabel: "Parfait" },
+                leMans: { high: 6.5, low: 2.5, precip: 3.0, snow: 0, risk: "safe", riskLabel: "Parfait" },
+                rouen: { high: 5.9, low: 2.7, precip: 1.2, snow: 0, risk: "safe", riskLabel: "Parfait" },
+                paris: { high: 6.0, low: 2.5, precip: 1.0, snow: 0, risk: "safe", riskLabel: "Parfait" },
+                ambleville: { high: 3.7, low: 0.4, precip: 6.0, snow: 0.8, risk: "safe", riskLabel: "OK, pluie" }
+            }
+        };
+        // WEATHER_DATA_END
+
+        const dayInfo = {
+            "jan3": { status: "safe", message: "<strong>3 janvier:</strong> RECOMMANDÉ - Partir vers 11h, route directe vers Paris." },
+            "jan4": { status: "danger", message: "<strong>4 janvier:</strong> DANGEREUX - Gel nocturne jusqu'à -4°C. À ÉVITER." },
+            "jan5": { status: "danger", message: "<strong>5 janvier:</strong> TRÈS DANGEREUX - NEIGE: 6,7cm à Avranches. NE PAS PARTIR." },
+            "jan6": { status: "danger", message: "<strong>6 janvier:</strong> TRÈS DANGEREUX - Gel jusqu'à -5°C. NE PAS PARTIR." },
+            "jan7": { status: "danger", message: "<strong>7 janvier:</strong> PIRE JOUR - Neige + gel -6°C. NE PAS PARTIR." },
+            "jan8": { status: "danger", message: "<strong>8 janvier:</strong> PIÈGE - Journée chaude MAIS regel nocturne = VERGLAS." },
+            "jan9": { status: "caution", message: "<strong>9 janvier:</strong> POSSIBLE après 14h - Attendre que le soleil réchauffe les routes." },
+            "jan10": { status: "safe", message: "<strong>10 janvier:</strong> TRÈS SÛR - Pas de gel nocturne. Conditions idéales." }
+        };
+
+        const cities = {
+            loctudy: { name: "Loctudy", coords: [47.8344, -4.1714], type: "start" },
+            quimper: { name: "Quimper", coords: [47.9960, -4.1024], type: "waypoint" },
+            rennes: { name: "Rennes", coords: [48.1173, -1.6778], type: "waypoint" },
+            cancale: { name: "Cancale", coords: [48.6703, -1.8514], type: "waypoint" },
+            avranches: { name: "Avranches", coords: [48.6839, -1.3567], type: "waypoint" },
+            caen: { name: "Caen", coords: [49.1829, -0.3707], type: "waypoint" },
+            leMans: { name: "Le Mans", coords: [47.9959, 0.1920], type: "waypoint" },
+            rouen: { name: "Rouen", coords: [49.4432, 1.0999], type: "waypoint" },
+            paris: { name: "Paris", coords: [48.8566, 2.3522], type: "waypoint" },
+            ambleville: { name: "Ambleville", coords: [49.1456, 1.7008], type: "end" }
+        };
+
+        const routeCancale = [
+            cities.loctudy.coords, cities.quimper.coords, [48.0897, -2.7614], cities.rennes.coords,
+            [48.4500, -1.7500], cities.cancale.coords, cities.avranches.coords, cities.caen.coords,
+            cities.rouen.coords, [49.0500, 1.4500], cities.ambleville.coords
+        ];
+
+        const routeDirect = [
+            cities.loctudy.coords, cities.quimper.coords, [47.9500, -3.0000], [47.8500, -2.0000],
+            cities.rennes.coords, [48.0000, -0.8000], cities.leMans.coords, [48.3000, 0.8000],
+            cities.paris.coords, cities.ambleville.coords
+        ];
+
+        let currentDay = "jan3";
+        let markers = {};
+
+        const map = L.map('map').setView([48.3, -1.5], 6);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
+
+        L.polyline(routeCancale, { color: '#17a2b8', weight: 4, opacity: 0.8 }).addTo(map);
+        L.polyline(routeDirect, { color: '#28a745', weight: 4, opacity: 0.8, dashArray: '10, 10' }).addTo(map);
+
+        L.marker([48.5, -2.0], {
+            icon: L.divIcon({
+                className: 'route-label',
+                html: '<div style="background: #17a2b8; color: white; padding: 5px 12px; border-radius: 4px; font-size: 10.5px; font-weight: 500; text-transform: uppercase; letter-spacing: 1.5px; white-space: nowrap; font-family: Montserrat, sans-serif;">Via Cancale</div>',
+                iconSize: [110, 26]
+            })
+        }).addTo(map);
+
+        L.marker([47.9, -0.5], {
+            icon: L.divIcon({
+                className: 'route-label',
+                html: '<div style="background: #28a745; color: white; padding: 5px 12px; border-radius: 4px; font-size: 10.5px; font-weight: 500; text-transform: uppercase; letter-spacing: 1.5px; white-space: nowrap; font-family: Montserrat, sans-serif;">Direct</div>',
+                iconSize: [70, 26]
+            })
+        }).addTo(map);
+
+        function createIcon(type, risk) {
+            let color, size;
+            if (type === 'start') { color = '#28a745'; size = 16; }
+            else if (type === 'end') { color = '#e83e8c'; size = 16; }
+            else { color = risk === 'safe' ? '#28a745' : risk === 'caution' ? '#ffc107' : '#dc3545'; size = 12; }
+            return L.divIcon({
+                className: 'custom-marker',
+                html: `<div style="width: ${size}px; height: ${size}px; background: ${color}; border: 2px solid white; border-radius: 50%; box-shadow: 0 1px 3px rgba(0,0,0,0.2);"></div>`,
+                iconSize: [size, size], iconAnchor: [size/2, size/2]
+            });
+        }
+
+        function getPopupContent(cityKey) {
+            const city = cities[cityKey];
+            const weather = weatherData[currentDay][cityKey];
+            const dayLabel = currentDay.replace('jan', '') + ' janvier';
+            let snowInfo = weather.snow > 0 ? `<div class="popup-snow">Neige: ${weather.snow} cm</div>` : '';
+            return `
+                <div class="popup-title">${city.name}</div>
+                <div class="popup-date">${dayLabel} 2026</div>
+                <div class="popup-weather">
+                    <span class="popup-temp ${weather.risk}">${weather.high}° / ${weather.low}°C</span>
+                    ${snowInfo}
+                    <div class="popup-risk ${weather.risk}">${weather.riskLabel}</div>
+                </div>
+            `;
+        }
+
+        function initMarkers() {
+            Object.entries(cities).forEach(([key, city]) => {
+                const weather = weatherData[currentDay][key];
+                const marker = L.marker(city.coords, { icon: createIcon(city.type, weather.risk) }).addTo(map);
+                marker.bindPopup(getPopupContent(key));
+                markers[key] = marker;
+            });
+        }
+
+        function updateMarkers() {
+            Object.entries(cities).forEach(([key, city]) => {
+                const weather = weatherData[currentDay][key];
+                markers[key].setIcon(createIcon(city.type, weather.risk));
+                markers[key].setPopupContent(getPopupContent(key));
+            });
+        }
+
+        function initDayButtons() {
+            const container = document.getElementById('dayButtons');
+            const days = ['jan3', 'jan4', 'jan5', 'jan6', 'jan7', 'jan8', 'jan9', 'jan10'];
+            const labels = ['3 jan', '4 jan', '5 jan', '6 jan', '7 jan', '8 jan', '9 jan', '10 jan'];
+            const statuses = ['OK', 'Gel', 'Neige', 'Neige', 'PIRE', 'Regel', 'PM OK', 'SUR'];
+            days.forEach((day, i) => {
+                const info = dayInfo[day];
+                const btn = document.createElement('button');
+                btn.className = `day-btn ${info.status}`;
+                if (day === currentDay) btn.classList.add('active');
+                btn.innerHTML = `<div class="day-name">${labels[i]}</div><div class="day-status">${statuses[i]}</div>`;
+                btn.addEventListener('click', () => selectDay(day));
+                container.appendChild(btn);
+            });
+        }
+
+        function selectDay(day) {
+            currentDay = day;
+            document.querySelectorAll('.day-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.closest('.day-btn').classList.add('active');
+            const info = dayInfo[day];
+            const banner = document.getElementById('dayInfo');
+            banner.className = `day-info ${info.status}`;
+            banner.innerHTML = info.message;
+            updateMarkers();
+        }
+
+        const allPoints = [...routeCancale, ...routeDirect];
+        map.fitBounds(L.latLngBounds(allPoints).pad(0.1));
+
+        function toggleMessage() {
+            document.getElementById('messageContent').classList.toggle('hidden');
+        }
+
+        initDayButtons();
+        initMarkers();
+    </script>
+</body>
+</html>
