@@ -1,0 +1,44 @@
+name: Update Weather Data
+
+on:
+  schedule:
+    # Run every 6 hours at minutes 0
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+    # Allow manual trigger from GitHub Actions tab
+
+jobs:
+  update-weather:
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: write
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install requests
+
+      - name: Fetch weather and update HTML
+        run: |
+          python scripts/update_weather.py
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "GitHub Action Bot"
+          git config user.email "action@github.com"
+          git add index.html
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "🌤️ Auto-update weather data $(date -u +%Y-%m-%d_%H:%M)"
+            git push
+          fi
