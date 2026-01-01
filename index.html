@@ -22,16 +22,19 @@
         }
         .header .subtitle { font-family: 'Segoe UI', sans-serif; font-size: 14px; color: #666; margin-top: 8px; }
         #map { height: 55vh; width: 100%; border-bottom: 1px solid #e0e0e0; }
-        .day-selector { background: #fafafa; padding: 24px 48px; border-bottom: 1px solid #e0e0e0; }
-        .day-selector h3 {
+
+        /* Controls Section - Day + Departure Time */
+        .controls-section { background: #fafafa; padding: 24px 48px; border-bottom: 1px solid #e0e0e0; }
+        .controls-row { display: flex; flex-wrap: wrap; gap: 32px; align-items: flex-start; }
+        .control-group h3 {
             font-family: 'Montserrat', sans-serif; font-size: 10.5px; text-transform: uppercase;
-            letter-spacing: 1.5px; color: #777; margin-bottom: 16px; font-weight: 500;
+            letter-spacing: 1.5px; color: #777; margin-bottom: 12px; font-weight: 500;
         }
-        .day-buttons { display: flex; flex-wrap: wrap; gap: 12px; }
+        .day-buttons { display: flex; flex-wrap: wrap; gap: 10px; }
         .day-btn {
-            padding: 14px 20px; border: 1px solid #e0e0e0; border-radius: 6px; background: white;
-            cursor: pointer; font-family: 'Montserrat', sans-serif; font-size: 13.5px;
-            transition: all 0.2s; text-align: center; min-width: 90px; box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+            padding: 12px 16px; border: 1px solid #e0e0e0; border-radius: 6px; background: white;
+            cursor: pointer; font-family: 'Montserrat', sans-serif; font-size: 12px;
+            transition: all 0.2s; text-align: center; min-width: 70px; box-shadow: 0 1px 3px rgba(0,0,0,0.04);
         }
         .day-btn:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
         .day-btn.active { border-color: #333; background: #333; color: white; }
@@ -41,13 +44,24 @@
         .day-btn.danger.active { background: #dc3545; border-color: #dc3545; color: white; }
         .day-btn.caution { border-left: 3px solid #ffc107; }
         .day-btn.caution.active { background: #ffc107; border-color: #ffc107; color: #333; }
-        .day-btn .day-name { font-family: 'Montserrat', sans-serif; font-weight: 600; color: #333; font-size: 13.5px; }
+        .day-btn .day-name { font-family: 'Montserrat', sans-serif; font-weight: 600; color: #333; font-size: 12px; }
         .day-btn.active .day-name { color: inherit; }
         .day-btn .day-status {
-            font-family: 'Montserrat', sans-serif; font-size: 10.5px; text-transform: uppercase;
-            letter-spacing: 1px; margin-top: 4px; color: #777;
+            font-family: 'Montserrat', sans-serif; font-size: 9px; text-transform: uppercase;
+            letter-spacing: 0.5px; margin-top: 3px; color: #777;
         }
         .day-btn.active .day-status { color: inherit; opacity: 0.9; }
+
+        /* Departure Time Selector */
+        .departure-selector { display: flex; flex-wrap: wrap; gap: 8px; }
+        .departure-btn {
+            padding: 10px 14px; border: 1px solid #e0e0e0; border-radius: 4px; background: white;
+            cursor: pointer; font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 500;
+            transition: all 0.2s; color: #666;
+        }
+        .departure-btn:hover { border-color: #17a2b8; color: #17a2b8; }
+        .departure-btn.active { background: #17a2b8; border-color: #17a2b8; color: white; }
+
         .day-info {
             padding: 20px 48px; font-family: 'Segoe UI', sans-serif; font-size: 14px;
             color: #666; line-height: 1.6; background: #fafafa; border-left: 4px solid #17a2b8;
@@ -68,14 +82,16 @@
         .legend-line { width: 40px; height: 4px; margin-right: 14px; border-radius: 2px; }
         .route-cancale { background: #17a2b8; }
         .route-direct { background: #28a745; }
-        .leaflet-popup-content { margin: 14px 18px; min-width: 200px; font-family: 'Segoe UI', sans-serif; }
+        .leaflet-popup-content { margin: 14px 18px; min-width: 220px; font-family: 'Segoe UI', sans-serif; }
         .popup-title { font-family: 'Montserrat', sans-serif; font-size: 13.5px; font-weight: 600; color: #333; margin-bottom: 4px; }
         .popup-date { font-family: 'Segoe UI', sans-serif; font-size: 12px; color: #888; margin-bottom: 10px; }
         .popup-weather { padding-top: 10px; border-top: 1px dashed #e0e0e0; }
-        .popup-temp { font-family: 'Montserrat', sans-serif; font-size: 13.5px; font-weight: 600; }
-        .popup-temp.safe { color: #28a745; }
-        .popup-temp.caution { color: #e6a000; }
-        .popup-temp.danger { color: #dc3545; }
+        .popup-arrival { font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 600; margin-bottom: 6px; }
+        .popup-arrival.safe { color: #28a745; }
+        .popup-arrival.caution { color: #e6a000; }
+        .popup-arrival.danger { color: #dc3545; }
+        .popup-overnight { font-family: 'Segoe UI', sans-serif; font-size: 12px; color: #888; margin-bottom: 8px; }
+        .popup-overnight.warning { color: #dc3545; font-weight: 500; }
         .popup-risk {
             margin-top: 10px; display: inline-block; font-family: 'Montserrat', sans-serif;
             font-size: 10.5px; padding: 4px 10px; border-radius: 4px; font-weight: 500;
@@ -108,20 +124,9 @@
             border-bottom: 1px dashed #e0e0e0; font-weight: 500;
         }
         .message-content h3.danger-title { color: #dc3545; }
-        .message-content h4 { font-family: 'Montserrat', sans-serif; font-size: 13.5px; font-weight: 600; color: #333; margin: 24px 0 14px 0; }
         .message-content p { margin-bottom: 14px; line-height: 1.7; font-family: 'Segoe UI', sans-serif; font-size: 14px; color: #666; }
         .message-content .highlight { background: #fafafa; padding: 3px 8px; border-radius: 4px; border: 1px solid #e0e0e0; }
-        .message-content .danger-text { color: #dc3545; font-weight: 600; }
-        .message-content .safe-text { color: #28a745; font-weight: 600; }
-        .message-content ol, .message-content ul { margin: 14px 0 18px 28px; font-family: 'Segoe UI', sans-serif; font-size: 14px; color: #666; line-height: 1.8; }
-        .message-content li { margin-bottom: 6px; }
         .message-content a { color: #17a2b8; font-weight: 500; }
-        .callout {
-            background: #fafafa; border-left: 4px solid #17a2b8; padding: 24px 28px;
-            font-family: 'Segoe UI', sans-serif; font-size: 14px; color: #666; line-height: 1.7; margin: 24px 0;
-        }
-        .callout strong { color: #333; }
-        .callout.warning { border-left-color: #ffc107; }
         .summary-table { width: 100%; border-collapse: collapse; margin: 20px 0; font-family: 'Segoe UI', sans-serif; font-size: 14px; }
         .summary-table th {
             font-family: 'Montserrat', sans-serif; font-size: 10.5px; text-transform: uppercase;
@@ -132,27 +137,23 @@
         .summary-table tr.safe td { border-left: 4px solid #28a745; }
         .summary-table tr.danger td { border-left: 4px solid #dc3545; }
         .summary-table tr.caution td { border-left: 4px solid #ffc107; }
+        .summary-table .verdict-safe { color: #28a745; font-weight: 600; }
+        .summary-table .verdict-danger { color: #dc3545; font-weight: 600; }
+        .summary-table .verdict-caution { color: #e6a000; font-weight: 600; }
         .signature {
             margin-top: 36px; padding-top: 28px; border-top: 1px dashed #e0e0e0;
             font-family: 'Segoe UI', sans-serif; font-size: 12px; color: #888; font-style: italic;
         }
         .signature p { color: #888; font-size: 12px; margin-bottom: 8px; }
         @media (max-width: 600px) {
-            .header, .day-selector, .legend, .footer, .message-section, .day-info { padding-left: 20px; padding-right: 20px; }
+            .header, .controls-section, .legend, .footer, .message-section, .day-info { padding-left: 20px; padding-right: 20px; }
             #map { height: 45vh; }
             .header h1 { font-size: 14px; letter-spacing: 3px; }
-            .header .subtitle { font-size: 12px; }
-            .day-btn { padding: 12px 14px; min-width: 75px; font-size: 12px; }
-            .day-btn .day-name { font-size: 12px; }
-            .day-btn .day-status { font-size: 9px; }
-            .day-info { font-size: 13px; }
-            .message-content h2 { font-size: 12px; }
-            .message-content h3 { font-size: 10px; }
-            .message-content p, .message-content ol, .message-content ul { font-size: 13px; }
-            .callout { padding: 18px 22px; font-size: 13px; }
-            .summary-table { font-size: 12px; }
-            .summary-table th { font-size: 9px; }
-            .summary-table th, .summary-table td { padding: 10px; }
+            .controls-row { gap: 20px; }
+            .day-btn { padding: 10px 12px; min-width: 60px; }
+            .day-btn .day-name { font-size: 11px; }
+            .day-btn .day-status { font-size: 8px; }
+            .departure-btn { padding: 8px 10px; font-size: 11px; }
         }
     </style>
 </head>
@@ -168,16 +169,12 @@
             <h2>Cher Papa,</h2>
             <p>Je suis Claude, l'assistant IA de Nathalie - et comme toi, je m'appelle Claude! Elle m'a demandé de t'aider à planifier ton trajet en toute sécurité.</p>
             <h3 class="danger-title">Le Danger Principal: Le Regel</h3>
-            <p>Tu as <strong>tout à fait raison</strong> de t'inquiéter du <span class="highlight">regel</span> (pluie ou neige suivie de gel).</p>
+            <p>Tu as <strong>tout à fait raison</strong> de t'inquiéter du <span class="highlight">regel</span> (pluie ou neige suivie de gel). Cette carte montre la température <strong>à l'heure où tu passerais</strong> dans chaque ville, PLUS la température de la nuit précédente pour détecter le risque de verglas.</p>
             <h3>Mes Recommandations</h3>
-            <table class="summary-table">
+            <table class="summary-table" id="summaryTable">
                 <thead><tr><th>Date de départ</th><th>Verdict</th><th>Pourquoi</th></tr></thead>
-                <tbody>
-                    <tr class="safe"><td><strong>3 janvier, 11h</strong></td><td class="safe-text">RECOMMANDÉ</td><td>Dernière fenêtre AVANT la vague de froid.</td></tr>
-                    <tr class="danger"><td>4-7 janvier</td><td class="danger-text">NE PAS PARTIR</td><td>Vague de froid, neige, gel jusqu'à -6°C</td></tr>
-                    <tr class="danger"><td>8 janvier</td><td class="danger-text">PIÈGE!</td><td>Journée chaude MAIS regel nocturne sévère</td></tr>
-                    <tr class="safe"><td><strong>9 janvier, 14h+</strong></td><td class="safe-text">POSSIBLE</td><td>Routes réchauffées par le soleil</td></tr>
-                    <tr class="safe"><td><strong>10 janvier</strong></td><td class="safe-text">IDÉAL</td><td>Pas de gel nocturne, conditions parfaites</td></tr>
+                <tbody id="summaryBody">
+                    <!-- Generated dynamically by JavaScript -->
                 </tbody>
             </table>
             <h3>Avant de partir</h3>
@@ -193,21 +190,29 @@
         </div>
     </div>
 
-    <div class="day-selector">
-        <h3>Sélectionnez un jour de départ</h3>
-        <div class="day-buttons" id="dayButtons"></div>
+    <div class="controls-section">
+        <div class="controls-row">
+            <div class="control-group">
+                <h3>Jour de départ</h3>
+                <div class="day-buttons" id="dayButtons"></div>
+            </div>
+            <div class="control-group">
+                <h3>Heure de départ</h3>
+                <div class="departure-selector" id="departureSelector"></div>
+            </div>
+        </div>
     </div>
 
     <div class="day-info safe" id="dayInfo">
-        <strong>3 janvier:</strong> RECOMMANDÉ - Partir vers 11h, route directe vers Paris.
+        <strong>3 janvier, départ 11h:</strong> Chargement...
     </div>
 
     <div id="map"></div>
 
     <div class="legend">
-        <h3>Routes</h3>
-        <div class="legend-item"><div class="legend-line route-cancale"></div><span><strong>Option A:</strong> Via Cancale (2 jours, 600 km)</span></div>
-        <div class="legend-item"><div class="legend-line route-direct"></div><span><strong>Option B:</strong> Direct via Rennes-Le Mans (1 jour, 580 km)</span></div>
+        <h3>Routes (couleur = risque du jour)</h3>
+        <div class="legend-item"><div class="legend-line" id="legendCancale" style="background: #17a2b8;"></div><span><strong>Option A:</strong> Via Cancale (2 jours, 600 km)</span></div>
+        <div class="legend-item"><div class="legend-line" id="legendDirect" style="background: #28a745;"></div><span><strong>Option B:</strong> Direct via Rennes-Le Mans (1 jour, 580 km)</span></div>
     </div>
 
     <div class="footer">
@@ -222,114 +227,131 @@
         // WEATHER_DATA_START
         const weatherData = {
             "jan3": {
-                loctudy: { high: 6.2, low: -1.0, precip: 0, snow: 0, risk: "caution", riskLabel: "Prudence" },
-                quimper: { high: 5.9, low: -1.3, precip: 0.4, snow: 0, risk: "danger", riskLabel: "Pluie + gel" },
-                rennes: { high: 5.5, low: -3.0, precip: 2.0, snow: 0, risk: "danger", riskLabel: "Pluie + gel" },
-                cancale: { high: 6.5, low: 4.4, precip: 0, snow: 0, risk: "safe", riskLabel: "Pas de gel" },
-                avranches: { high: 4.5, low: -1.6, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel -1.6°C" },
-                caen: { high: 5.3, low: 0.4, precip: 0, snow: 0, risk: "caution", riskLabel: "Gel léger" },
-                leMans: { high: 4.8, low: -3.0, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel -3.0°C" },
-                rouen: { high: 3.8, low: -0.6, precip: 0, snow: 0, risk: "caution", riskLabel: "Gel léger" },
-                paris: { high: 3.5, low: -1.3, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel -1.3°C" },
-                ambleville: { high: 2.8, low: -2.1, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel -2.1°C" }
+                loctudy: { hourly: [6,5,4,3,2,1,0,-1,0,1,3,5,6,6,6,5,4,3,2,1,0,-1,-1,0], overnightLow: -1.0, dailyHigh: 6.2, dailyLow: -1.0, snow: 0, precip: 0 },
+                quimper: { hourly: [5,4,3,2,1,0,-1,-1,0,2,4,5,6,6,5,4,3,2,1,0,-1,-1,-1,0], overnightLow: -1.3, dailyHigh: 5.9, dailyLow: -1.3, snow: 0, precip: 0.4 },
+                rennes: { hourly: [4,3,2,1,0,-1,-2,-3,-2,0,2,4,5,5,5,4,3,2,1,0,-1,-2,-2,-1], overnightLow: -3.0, dailyHigh: 5.5, dailyLow: -3.0, snow: 0, precip: 2.0 },
+                cancale: { hourly: [6,6,5,5,5,4,4,4,5,5,6,6,6,6,6,6,5,5,5,5,5,5,5,5], overnightLow: 4.4, dailyHigh: 6.5, dailyLow: 4.4, snow: 0, precip: 0 },
+                avranches: { hourly: [3,2,1,0,-1,-1,-2,-2,-1,0,2,3,4,4,4,3,2,1,0,-1,-1,-1,-1,0], overnightLow: -1.6, dailyHigh: 4.5, dailyLow: -1.6, snow: 0, precip: 0 },
+                caen: { hourly: [4,3,2,2,1,1,0,0,1,2,3,4,5,5,5,4,3,3,2,1,1,0,0,1], overnightLow: 0.4, dailyHigh: 5.3, dailyLow: 0.4, snow: 0, precip: 0 },
+                leMans: { hourly: [3,2,1,0,-1,-2,-3,-3,-2,0,2,3,4,5,5,4,3,2,1,0,-1,-2,-2,-1], overnightLow: -3.0, dailyHigh: 4.8, dailyLow: -3.0, snow: 0, precip: 0 },
+                rouen: { hourly: [2,2,1,0,0,-1,-1,-1,0,1,2,3,4,4,4,3,2,1,1,0,0,-1,-1,0], overnightLow: -0.6, dailyHigh: 3.8, dailyLow: -0.6, snow: 0, precip: 0 },
+                paris: { hourly: [2,1,0,0,-1,-1,-1,-1,0,1,2,3,3,4,3,3,2,1,0,0,-1,-1,-1,0], overnightLow: -1.3, dailyHigh: 3.5, dailyLow: -1.3, snow: 0, precip: 0 },
+                ambleville: { hourly: [1,0,0,-1,-1,-2,-2,-2,-1,0,1,2,3,3,3,2,1,0,0,-1,-1,-2,-2,-1], overnightLow: -2.1, dailyHigh: 2.8, dailyLow: -2.1, snow: 0, precip: 0 }
             },
             "jan4": {
-                loctudy: { high: 6.0, low: -1.5, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel -1.5°C" },
-                quimper: { high: 5.7, low: -2.0, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel -2.0°C" },
-                rennes: { high: 3.9, low: -4.0, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel -4.0°C" },
-                cancale: { high: 5.8, low: 0.1, precip: 0, snow: 0, risk: "caution", riskLabel: "Gel léger" },
-                avranches: { high: 2.7, low: -5.3, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel SÉVÈRE -5.3°C" },
-                caen: { high: 4.0, low: -2.0, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel -2.0°C" },
-                leMans: { high: 2.9, low: -7.4, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel SÉVÈRE -7.4°C" },
-                rouen: { high: 3.1, low: -3.2, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel -3.2°C" },
-                paris: { high: 2.2, low: -4.6, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel SÉVÈRE -4.6°C" },
-                ambleville: { high: 2.3, low: -5.2, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel SÉVÈRE -5.2°C" }
+                loctudy: { hourly: [5,4,3,2,1,0,-1,-1,0,2,4,5,6,6,5,4,3,2,1,0,-1,-1,-1,0], overnightLow: -1.5, dailyHigh: 6.0, dailyLow: -1.5, snow: 0, precip: 0 },
+                quimper: { hourly: [4,3,2,1,0,-1,-2,-2,-1,1,3,5,6,6,5,4,3,2,1,0,-1,-2,-2,-1], overnightLow: -2.0, dailyHigh: 5.7, dailyLow: -2.0, snow: 0, precip: 0 },
+                rennes: { hourly: [2,1,0,-1,-2,-3,-4,-4,-3,-1,1,3,4,4,3,2,1,0,-1,-2,-3,-3,-3,-2], overnightLow: -4.0, dailyHigh: 3.9, dailyLow: -4.0, snow: 0, precip: 0 },
+                cancale: { hourly: [5,5,4,4,3,2,1,0,1,2,4,5,6,6,5,4,3,2,1,1,0,0,0,1], overnightLow: 0.1, dailyHigh: 5.8, dailyLow: 0.1, snow: 0, precip: 0 },
+                avranches: { hourly: [1,0,-1,-2,-3,-4,-5,-5,-4,-2,0,2,3,3,2,1,0,-1,-2,-3,-4,-4,-4,-3], overnightLow: -5.3, dailyHigh: 2.7, dailyLow: -5.3, snow: 0, precip: 0 },
+                caen: { hourly: [3,2,1,0,-1,-1,-2,-2,-1,0,2,3,4,4,3,2,1,0,-1,-1,-2,-2,-2,-1], overnightLow: -2.0, dailyHigh: 4.0, dailyLow: -2.0, snow: 0, precip: 0 },
+                leMans: { hourly: [1,0,-1,-2,-4,-5,-7,-7,-5,-3,0,2,3,3,2,1,0,-2,-4,-5,-6,-7,-7,-5], overnightLow: -7.4, dailyHigh: 2.9, dailyLow: -7.4, snow: 0, precip: 0 },
+                rouen: { hourly: [2,1,0,-1,-2,-2,-3,-3,-2,-1,1,2,3,3,2,1,0,-1,-2,-2,-3,-3,-3,-2], overnightLow: -3.2, dailyHigh: 3.1, dailyLow: -3.2, snow: 0, precip: 0 },
+                paris: { hourly: [1,0,-1,-2,-3,-4,-4,-5,-4,-2,0,1,2,2,2,1,0,-1,-2,-3,-4,-4,-4,-3], overnightLow: -4.6, dailyHigh: 2.2, dailyLow: -4.6, snow: 0, precip: 0 },
+                ambleville: { hourly: [1,0,-1,-2,-3,-4,-5,-5,-4,-2,0,2,2,2,2,1,0,-1,-3,-4,-5,-5,-5,-4], overnightLow: -5.2, dailyHigh: 2.3, dailyLow: -5.2, snow: 0, precip: 0 }
             },
             "jan5": {
-                loctudy: { high: 6.9, low: -1.5, precip: 2.3, snow: 0, risk: "danger", riskLabel: "Pluie + gel" },
-                quimper: { high: 5.6, low: -2.0, precip: 3.5, snow: 0, risk: "danger", riskLabel: "Pluie + gel" },
-                rennes: { high: 3.7, low: -4.4, precip: 2.0, snow: 0.3, risk: "danger", riskLabel: "NEIGE 0.3cm" },
-                cancale: { high: 5.3, low: -0.2, precip: 10.5, snow: 0, risk: "caution", riskLabel: "Gel léger" },
-                avranches: { high: 3.9, low: -4.5, precip: 1.4, snow: 0.5, risk: "danger", riskLabel: "NEIGE 0.5cm" },
-                caen: { high: 4.5, low: -2.2, precip: 2.6, snow: 0, risk: "danger", riskLabel: "Pluie + gel" },
-                leMans: { high: 2.1, low: -8.6, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel SÉVÈRE -8.6°C" },
-                rouen: { high: 3.1, low: -3.8, precip: 1.4, snow: 1.0, risk: "danger", riskLabel: "NEIGE 1.0cm" },
-                paris: { high: 2.6, low: -6.2, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel SÉVÈRE -6.2°C" },
-                ambleville: { high: 2.6, low: -5.6, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel SÉVÈRE -5.6°C" }
+                loctudy: { hourly: [5,4,3,2,1,0,-1,-1,0,2,4,6,7,7,6,5,4,3,2,1,0,-1,-1,0], overnightLow: -1.5, dailyHigh: 6.9, dailyLow: -1.5, snow: 0, precip: 2.3 },
+                quimper: { hourly: [4,3,2,1,0,-1,-2,-2,-1,1,3,5,6,6,5,4,3,2,1,0,-1,-2,-2,-1], overnightLow: -2.0, dailyHigh: 5.6, dailyLow: -2.0, snow: 0, precip: 3.5 },
+                rennes: { hourly: [2,1,0,-1,-2,-3,-4,-4,-3,-1,1,3,4,4,3,2,1,0,-1,-2,-3,-4,-4,-3], overnightLow: -4.4, dailyHigh: 3.7, dailyLow: -4.4, snow: 0.3, precip: 2.0 },
+                cancale: { hourly: [4,4,3,2,1,0,-0.2,-0.2,0,2,4,5,5,5,5,4,3,2,1,0,0,0,0,1], overnightLow: -0.2, dailyHigh: 5.3, dailyLow: -0.2, snow: 0, precip: 10.5 },
+                avranches: { hourly: [2,1,0,-1,-3,-4,-4,-4,-3,-1,1,3,4,4,3,2,1,0,-2,-3,-4,-4,-4,-3], overnightLow: -4.5, dailyHigh: 3.9, dailyLow: -4.5, snow: 0.5, precip: 1.4 },
+                caen: { hourly: [3,2,1,0,-1,-2,-2,-2,-1,0,2,4,4,4,4,3,2,1,0,-1,-2,-2,-2,-1], overnightLow: -2.2, dailyHigh: 4.5, dailyLow: -2.2, snow: 0, precip: 2.6 },
+                leMans: { hourly: [0,-1,-3,-5,-7,-8,-9,-9,-7,-4,-1,1,2,2,1,0,-2,-4,-6,-7,-8,-8,-8,-6], overnightLow: -8.6, dailyHigh: 2.1, dailyLow: -8.6, snow: 0, precip: 0 },
+                rouen: { hourly: [1,0,-1,-2,-3,-3,-4,-4,-3,-1,1,2,3,3,2,1,0,-1,-2,-3,-3,-4,-4,-3], overnightLow: -3.8, dailyHigh: 3.1, dailyLow: -3.8, snow: 1.0, precip: 1.4 },
+                paris: { hourly: [1,0,-2,-3,-5,-6,-6,-6,-5,-3,0,2,3,3,2,1,0,-2,-4,-5,-6,-6,-6,-4], overnightLow: -6.2, dailyHigh: 2.6, dailyLow: -6.2, snow: 0, precip: 0 },
+                ambleville: { hourly: [1,0,-1,-3,-4,-5,-6,-6,-4,-2,0,2,3,3,2,1,0,-2,-3,-5,-5,-6,-6,-4], overnightLow: -5.6, dailyHigh: 2.6, dailyLow: -5.6, snow: 0, precip: 0 }
             },
             "jan6": {
-                loctudy: { high: 6.6, low: -0.6, precip: 0.5, snow: 0, risk: "caution", riskLabel: "Gel léger" },
-                quimper: { high: 5.6, low: -1.2, precip: 0.5, snow: 0, risk: "danger", riskLabel: "Pluie + gel" },
-                rennes: { high: 2.5, low: -3.6, precip: 1.2, snow: 0, risk: "danger", riskLabel: "VERGLAS!" },
-                cancale: { high: 4.8, low: 2.3, precip: 3.9, snow: 0, risk: "safe", riskLabel: "Pas de gel" },
-                avranches: { high: 2.3, low: -4.6, precip: 3.4, snow: 2.0, risk: "danger", riskLabel: "NEIGE 2.0cm" },
-                caen: { high: 2.3, low: -3.7, precip: 1.0, snow: 0, risk: "danger", riskLabel: "VERGLAS!" },
-                leMans: { high: 1.4, low: -2.8, precip: 2.4, snow: 1.7, risk: "danger", riskLabel: "NEIGE 1.7cm" },
-                rouen: { high: 0.9, low: -1.5, precip: 7.0, snow: 4.9, risk: "danger", riskLabel: "NEIGE 4.9cm" },
-                paris: { high: -0.4, low: -2.0, precip: 2.4, snow: 1.7, risk: "danger", riskLabel: "NEIGE 1.7cm" },
-                ambleville: { high: -0.1, low: -1.7, precip: 3.6, snow: 2.5, risk: "danger", riskLabel: "NEIGE 2.5cm" }
+                loctudy: { hourly: [5,4,3,2,1,0,0,0,1,3,5,6,7,7,6,5,4,3,2,1,0,0,0,1], overnightLow: -0.6, dailyHigh: 6.6, dailyLow: -0.6, snow: 0, precip: 0.5 },
+                quimper: { hourly: [4,3,2,1,0,-1,-1,-1,0,2,4,5,6,6,5,4,3,2,1,0,-1,-1,-1,0], overnightLow: -1.2, dailyHigh: 5.6, dailyLow: -1.2, snow: 0, precip: 0.5 },
+                rennes: { hourly: [1,0,-1,-2,-3,-3,-4,-4,-3,-1,1,2,2,2,2,1,0,-1,-2,-3,-3,-3,-3,-2], overnightLow: -3.6, dailyHigh: 2.5, dailyLow: -3.6, snow: 0, precip: 1.2 },
+                cancale: { hourly: [4,4,3,3,3,2,2,2,3,3,4,5,5,5,5,4,4,3,3,3,2,2,2,3], overnightLow: 2.3, dailyHigh: 4.8, dailyLow: 2.3, snow: 0, precip: 3.9 },
+                avranches: { hourly: [1,0,-1,-2,-3,-4,-5,-5,-4,-2,0,2,2,2,2,1,0,-1,-3,-4,-4,-4,-4,-3], overnightLow: -4.6, dailyHigh: 2.3, dailyLow: -4.6, snow: 2.0, precip: 3.4 },
+                caen: { hourly: [1,0,-1,-2,-3,-3,-4,-4,-3,-1,0,2,2,2,2,1,0,-1,-2,-3,-3,-4,-4,-3], overnightLow: -3.7, dailyHigh: 2.3, dailyLow: -3.7, snow: 0, precip: 1.0 },
+                leMans: { hourly: [0,-1,-1,-2,-2,-3,-3,-3,-2,-1,0,1,1,1,1,0,-1,-1,-2,-2,-3,-3,-3,-2], overnightLow: -2.8, dailyHigh: 1.4, dailyLow: -2.8, snow: 1.7, precip: 2.4 },
+                rouen: { hourly: [0,0,-1,-1,-1,-1,-1,-1,-1,0,0,1,1,1,1,0,0,-1,-1,-1,-1,-1,-1,-1], overnightLow: -1.5, dailyHigh: 0.9, dailyLow: -1.5, snow: 4.9, precip: 7.0 },
+                paris: { hourly: [-0.4,-1,-1,-1,-2,-2,-2,-2,-1,-1,0,0,0,0,0,0,-1,-1,-1,-2,-2,-2,-2,-1], overnightLow: -2.0, dailyHigh: -0.4, dailyLow: -2.0, snow: 1.7, precip: 2.4 },
+                ambleville: { hourly: [-0.1,-1,-1,-1,-2,-2,-2,-2,-1,-1,0,0,0,0,0,0,-1,-1,-1,-2,-2,-2,-2,-1], overnightLow: -1.7, dailyHigh: -0.1, dailyLow: -1.7, snow: 2.5, precip: 3.6 }
             },
             "jan7": {
-                loctudy: { high: 7.8, low: -1.4, precip: 2.4, snow: 0, risk: "danger", riskLabel: "Pluie + gel" },
-                quimper: { high: 7.5, low: -1.6, precip: 2.4, snow: 0, risk: "danger", riskLabel: "Pluie + gel" },
-                rennes: { high: 4.5, low: -6.6, precip: 1.2, snow: 0, risk: "danger", riskLabel: "VERGLAS!" },
-                cancale: { high: 6.2, low: 0.1, precip: 3.1, snow: 0, risk: "caution", riskLabel: "Gel léger" },
-                avranches: { high: 3.4, low: -6.0, precip: 1.9, snow: 0.8, risk: "danger", riskLabel: "NEIGE 0.8cm" },
-                caen: { high: 1.7, low: -4.3, precip: 2.4, snow: 0.8, risk: "danger", riskLabel: "NEIGE 0.8cm" },
-                leMans: { high: -0.9, low: -3.8, precip: 1.2, snow: 0.8, risk: "danger", riskLabel: "NEIGE 0.8cm" },
-                rouen: { high: -0.1, low: -2.6, precip: 2.4, snow: 1.7, risk: "danger", riskLabel: "NEIGE 1.7cm" },
-                paris: { high: -0.3, low: -1.9, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel -1.9°C" },
-                ambleville: { high: -0.5, low: -2.3, precip: 1.2, snow: 0.8, risk: "danger", riskLabel: "NEIGE 0.8cm" }
+                loctudy: { hourly: [6,5,4,3,2,1,0,-1,0,2,5,7,8,8,7,6,5,4,3,2,1,0,-1,0], overnightLow: -1.4, dailyHigh: 7.8, dailyLow: -1.4, snow: 0, precip: 2.4 },
+                quimper: { hourly: [5,4,3,2,1,0,-1,-2,-1,1,4,6,7,8,7,6,5,4,3,2,1,0,-1,-1], overnightLow: -1.6, dailyHigh: 7.5, dailyLow: -1.6, snow: 0, precip: 2.4 },
+                rennes: { hourly: [2,1,0,-2,-4,-5,-6,-7,-5,-2,1,3,4,5,4,3,2,1,0,-2,-4,-5,-6,-4], overnightLow: -6.6, dailyHigh: 4.5, dailyLow: -6.6, snow: 0, precip: 1.2 },
+                cancale: { hourly: [5,4,3,2,1,1,0,0,1,2,4,5,6,6,6,5,4,3,2,1,1,0,0,1], overnightLow: 0.1, dailyHigh: 6.2, dailyLow: 0.1, snow: 0, precip: 3.1 },
+                avranches: { hourly: [1,0,-1,-3,-5,-5,-6,-6,-5,-2,0,2,3,3,3,2,1,0,-2,-4,-5,-5,-6,-4], overnightLow: -6.0, dailyHigh: 3.4, dailyLow: -6.0, snow: 0.8, precip: 1.9 },
+                caen: { hourly: [0,-1,-2,-3,-4,-4,-4,-4,-3,-1,0,1,2,2,1,1,0,-1,-2,-3,-4,-4,-4,-3], overnightLow: -4.3, dailyHigh: 1.7, dailyLow: -4.3, snow: 0.8, precip: 2.4 },
+                leMans: { hourly: [-1,-1,-2,-3,-3,-4,-4,-4,-3,-2,-1,0,0,0,0,-1,-1,-2,-3,-3,-4,-4,-4,-3], overnightLow: -3.8, dailyHigh: -0.9, dailyLow: -3.8, snow: 0.8, precip: 1.2 },
+                rouen: { hourly: [0,0,-1,-2,-2,-2,-3,-3,-2,-1,0,0,0,0,0,0,-1,-1,-2,-2,-2,-3,-3,-2], overnightLow: -2.6, dailyHigh: -0.1, dailyLow: -2.6, snow: 1.7, precip: 2.4 },
+                paris: { hourly: [0,0,-1,-1,-2,-2,-2,-2,-2,-1,0,0,0,0,0,0,-1,-1,-1,-2,-2,-2,-2,-1], overnightLow: -1.9, dailyHigh: -0.3, dailyLow: -1.9, snow: 0, precip: 0 },
+                ambleville: { hourly: [0,-1,-1,-2,-2,-2,-2,-2,-2,-1,0,0,0,0,0,0,-1,-1,-2,-2,-2,-2,-2,-1], overnightLow: -2.3, dailyHigh: -0.5, dailyLow: -2.3, snow: 0.8, precip: 1.2 }
             },
             "jan8": {
-                loctudy: { high: 7.6, low: 2.9, precip: 3.6, snow: 0, risk: "safe", riskLabel: "Pas de gel" },
-                quimper: { high: 7.4, low: 3.0, precip: 3.6, snow: 0, risk: "safe", riskLabel: "Pas de gel" },
-                rennes: { high: 4.9, low: -0.4, precip: 0, snow: 0, risk: "caution", riskLabel: "Gel léger" },
-                cancale: { high: 6.9, low: 4.1, precip: 2.9, snow: 0, risk: "safe", riskLabel: "Pas de gel" },
-                avranches: { high: 4.3, low: -0.5, precip: 1.7, snow: 0, risk: "caution", riskLabel: "Gel léger" },
-                caen: { high: 4.2, low: -0.7, precip: 0, snow: 0, risk: "caution", riskLabel: "Gel léger" },
-                leMans: { high: 3.0, low: -3.1, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel -3.1°C" },
-                rouen: { high: 3.2, low: -2.1, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel -2.1°C" },
-                paris: { high: 2.6, low: -1.7, precip: 1.2, snow: 0, risk: "danger", riskLabel: "Pluie + gel" },
-                ambleville: { high: 2.3, low: -3.4, precip: 1.2, snow: 0, risk: "danger", riskLabel: "VERGLAS!" }
+                loctudy: { hourly: [6,5,5,4,4,3,3,3,4,5,6,7,8,8,7,6,6,5,5,4,4,3,3,4], overnightLow: 2.9, dailyHigh: 7.6, dailyLow: 2.9, snow: 0, precip: 3.6 },
+                quimper: { hourly: [6,5,4,4,4,3,3,3,4,5,6,7,7,7,7,6,5,5,4,4,3,3,3,4], overnightLow: 3.0, dailyHigh: 7.4, dailyLow: 3.0, snow: 0, precip: 3.6 },
+                rennes: { hourly: [3,2,1,0,0,-0.4,-0.4,-0.4,0,1,3,4,5,5,4,4,3,2,1,0,0,-0.4,-0.4,0], overnightLow: -0.4, dailyHigh: 4.9, dailyLow: -0.4, snow: 0, precip: 0 },
+                cancale: { hourly: [6,5,5,5,4,4,4,4,5,5,6,7,7,7,7,6,6,5,5,5,4,4,4,5], overnightLow: 4.1, dailyHigh: 6.9, dailyLow: 4.1, snow: 0, precip: 2.9 },
+                avranches: { hourly: [3,2,1,0,0,-0.5,-0.5,-0.5,0,1,3,4,4,4,4,3,3,2,1,0,0,-0.5,-0.5,0], overnightLow: -0.5, dailyHigh: 4.3, dailyLow: -0.5, snow: 0, precip: 1.7 },
+                caen: { hourly: [3,2,1,1,0,-0.7,-0.7,-0.7,0,1,3,4,4,4,4,3,2,2,1,0,-0.7,-0.7,-0.7,0], overnightLow: -0.7, dailyHigh: 4.2, dailyLow: -0.7, snow: 0, precip: 0 },
+                leMans: { hourly: [1,0,-1,-2,-3,-3,-3,-3,-2,0,1,2,3,3,2,2,1,0,-1,-2,-3,-3,-3,-2], overnightLow: -3.1, dailyHigh: 3.0, dailyLow: -3.1, snow: 0, precip: 0 },
+                rouen: { hourly: [2,1,0,-1,-1,-2,-2,-2,-1,0,2,3,3,3,3,2,1,0,-1,-1,-2,-2,-2,-1], overnightLow: -2.1, dailyHigh: 3.2, dailyLow: -2.1, snow: 0, precip: 0 },
+                paris: { hourly: [2,1,0,-1,-1,-2,-2,-2,-1,0,1,2,3,3,2,2,1,0,-1,-1,-2,-2,-2,-1], overnightLow: -1.7, dailyHigh: 2.6, dailyLow: -1.7, snow: 0, precip: 1.2 },
+                ambleville: { hourly: [1,0,-1,-2,-3,-3,-3,-3,-2,0,1,2,2,2,2,1,0,-1,-2,-3,-3,-3,-3,-2], overnightLow: -3.4, dailyHigh: 2.3, dailyLow: -3.4, snow: 0, precip: 1.2 }
             },
             "jan9": {
-                loctudy: { high: 11.7, low: 6.7, precip: 4.8, snow: 0, risk: "safe", riskLabel: "Parfait" },
-                quimper: { high: 11.4, low: 6.2, precip: 4.8, snow: 0, risk: "safe", riskLabel: "Parfait" },
-                rennes: { high: 11.5, low: 1.4, precip: 6.0, snow: 0, risk: "caution", riskLabel: "Gel léger" },
-                cancale: { high: 9.3, low: 5.1, precip: 6.0, snow: 0, risk: "safe", riskLabel: "Parfait" },
-                avranches: { high: 8.6, low: 1.0, precip: 6.0, snow: 0, risk: "caution", riskLabel: "Gel léger" },
-                caen: { high: 9.3, low: 2.0, precip: 6.0, snow: 0, risk: "caution", riskLabel: "Gel léger" },
-                leMans: { high: 8.7, low: -0.1, precip: 6.0, snow: 0, risk: "caution", riskLabel: "Gel léger" },
-                rouen: { high: 4.5, low: -0.8, precip: 7.2, snow: 0, risk: "caution", riskLabel: "Gel léger" },
-                paris: { high: 5.2, low: -1.0, precip: 7.2, snow: 0, risk: "danger", riskLabel: "Pluie + gel" },
-                ambleville: { high: 3.7, low: -2.4, precip: 7.2, snow: 0, risk: "danger", riskLabel: "Pluie + gel" }
+                loctudy: { hourly: [9,8,8,7,7,7,7,7,8,9,10,11,12,12,11,10,9,9,8,8,7,7,7,8], overnightLow: 6.7, dailyHigh: 11.7, dailyLow: 6.7, snow: 0, precip: 4.8 },
+                quimper: { hourly: [9,8,7,7,6,6,6,6,7,8,10,11,11,11,11,10,9,8,7,7,6,6,6,7], overnightLow: 6.2, dailyHigh: 11.4, dailyLow: 6.2, snow: 0, precip: 4.8 },
+                rennes: { hourly: [6,5,4,3,2,1,1,1,2,5,8,10,11,12,11,10,8,6,5,4,3,2,1,2], overnightLow: 1.4, dailyHigh: 11.5, dailyLow: 1.4, snow: 0, precip: 6.0 },
+                cancale: { hourly: [7,7,6,6,5,5,5,5,6,7,8,9,9,9,9,8,7,7,6,6,5,5,5,6], overnightLow: 5.1, dailyHigh: 9.3, dailyLow: 5.1, snow: 0, precip: 6.0 },
+                avranches: { hourly: [5,4,3,2,1,1,1,1,2,4,6,8,9,9,8,7,5,4,3,2,1,1,1,2], overnightLow: 1.0, dailyHigh: 8.6, dailyLow: 1.0, snow: 0, precip: 6.0 },
+                caen: { hourly: [6,5,4,3,2,2,2,2,3,5,7,9,9,9,9,8,6,5,4,3,2,2,2,3], overnightLow: 2.0, dailyHigh: 9.3, dailyLow: 2.0, snow: 0, precip: 6.0 },
+                leMans: { hourly: [4,3,2,1,0,-0.1,-0.1,-0.1,1,3,6,8,9,9,8,7,5,4,2,1,0,-0.1,-0.1,1], overnightLow: -0.1, dailyHigh: 8.7, dailyLow: -0.1, snow: 0, precip: 6.0 },
+                rouen: { hourly: [3,2,1,0,0,-1,-1,-1,0,1,3,4,4,5,4,4,3,2,1,0,0,-1,-1,0], overnightLow: -0.8, dailyHigh: 4.5, dailyLow: -0.8, snow: 0, precip: 7.2 },
+                paris: { hourly: [3,2,1,0,-1,-1,-1,-1,0,2,4,5,5,5,5,4,3,2,1,0,-1,-1,-1,0], overnightLow: -1.0, dailyHigh: 5.2, dailyLow: -1.0, snow: 0, precip: 7.2 },
+                ambleville: { hourly: [2,1,0,-1,-2,-2,-2,-2,-1,0,2,3,4,4,3,3,2,1,0,-1,-2,-2,-2,-1], overnightLow: -2.4, dailyHigh: 3.7, dailyLow: -2.4, snow: 0, precip: 7.2 }
             },
             "jan10": {
-                loctudy: { high: 9.6, low: 4.6, precip: 0, snow: 0, risk: "safe", riskLabel: "Parfait" },
-                quimper: { high: 9.4, low: 4.2, precip: 0, snow: 0, risk: "safe", riskLabel: "Parfait" },
-                rennes: { high: 8.4, low: 2.9, precip: 0, snow: 0, risk: "safe", riskLabel: "Parfait" },
-                cancale: { high: 8.5, low: 4.7, precip: 0, snow: 0, risk: "safe", riskLabel: "Parfait" },
-                avranches: { high: 7.1, low: 1.9, precip: 0, snow: 0, risk: "caution", riskLabel: "Gel léger" },
-                caen: { high: 7.3, low: 1.9, precip: 0, snow: 0, risk: "caution", riskLabel: "Gel léger" },
-                leMans: { high: 6.6, low: 1.6, precip: 0, snow: 0, risk: "caution", riskLabel: "Gel léger" },
-                rouen: { high: 5.7, low: 0.6, precip: 0, snow: 0, risk: "caution", riskLabel: "Gel léger" },
-                paris: { high: 4.6, low: 1.2, precip: 0, snow: 0, risk: "caution", riskLabel: "Gel léger" },
-                ambleville: { high: 4.1, low: -0.4, precip: 0, snow: 0, risk: "caution", riskLabel: "Gel léger" }
+                loctudy: { hourly: [8,7,7,6,5,5,5,5,6,7,8,9,10,10,9,8,7,7,6,5,5,5,5,6], overnightLow: 4.6, dailyHigh: 9.6, dailyLow: 4.6, snow: 0, precip: 0 },
+                quimper: { hourly: [8,7,6,5,5,4,4,4,5,6,8,9,9,9,9,8,7,6,5,5,4,4,4,5], overnightLow: 4.2, dailyHigh: 9.4, dailyLow: 4.2, snow: 0, precip: 0 },
+                rennes: { hourly: [6,5,4,4,3,3,3,3,4,5,7,8,8,8,8,7,6,5,4,4,3,3,3,4], overnightLow: 2.9, dailyHigh: 8.4, dailyLow: 2.9, snow: 0, precip: 0 },
+                cancale: { hourly: [7,6,6,5,5,5,5,5,5,6,7,8,8,9,8,7,7,6,6,5,5,5,5,5], overnightLow: 4.7, dailyHigh: 8.5, dailyLow: 4.7, snow: 0, precip: 0 },
+                avranches: { hourly: [5,4,3,3,2,2,2,2,3,4,6,7,7,7,7,6,5,4,3,3,2,2,2,3], overnightLow: 1.9, dailyHigh: 7.1, dailyLow: 1.9, snow: 0, precip: 0 },
+                caen: { hourly: [5,4,4,3,2,2,2,2,3,4,6,7,7,7,7,6,5,4,4,3,2,2,2,3], overnightLow: 1.9, dailyHigh: 7.3, dailyLow: 1.9, snow: 0, precip: 0 },
+                leMans: { hourly: [4,4,3,2,2,2,2,2,2,4,5,6,7,7,6,5,4,4,3,2,2,2,2,2], overnightLow: 1.6, dailyHigh: 6.6, dailyLow: 1.6, snow: 0, precip: 0 },
+                rouen: { hourly: [4,3,2,1,1,1,1,1,1,3,4,5,6,6,5,5,4,3,2,1,1,1,1,1], overnightLow: 0.6, dailyHigh: 5.7, dailyLow: 0.6, snow: 0, precip: 0 },
+                paris: { hourly: [3,3,2,1,1,1,1,1,2,3,4,5,5,5,5,4,3,3,2,1,1,1,1,2], overnightLow: 1.2, dailyHigh: 4.6, dailyLow: 1.2, snow: 0, precip: 0 },
+                ambleville: { hourly: [3,2,1,0,0,-0.4,-0.4,-0.4,0,2,3,4,4,4,4,3,2,1,0,0,-0.4,-0.4,-0.4,0], overnightLow: -0.4, dailyHigh: 4.1, dailyLow: -0.4, snow: 0, precip: 0 }
             },
         };
         // WEATHER_DATA_END
 
-        const dayInfo = {
-            "jan3": { status: "safe", message: "<strong>3 janvier:</strong> RECOMMANDÉ - Partir vers 11h, route directe vers Paris." },
-            "jan4": { status: "danger", message: "<strong>4 janvier:</strong> DANGEREUX - Gel nocturne jusqu'à -4°C. À ÉVITER." },
-            "jan5": { status: "danger", message: "<strong>5 janvier:</strong> TRÈS DANGEREUX - NEIGE: 6,7cm à Avranches. NE PAS PARTIR." },
-            "jan6": { status: "danger", message: "<strong>6 janvier:</strong> TRÈS DANGEREUX - Gel jusqu'à -5°C. NE PAS PARTIR." },
-            "jan7": { status: "danger", message: "<strong>7 janvier:</strong> PIRE JOUR - Neige + gel -6°C. NE PAS PARTIR." },
-            "jan8": { status: "danger", message: "<strong>8 janvier:</strong> PIÈGE - Journée chaude MAIS regel nocturne = VERGLAS." },
-            "jan9": { status: "caution", message: "<strong>9 janvier:</strong> POSSIBLE après 14h - Attendre que le soleil réchauffe les routes." },
-            "jan10": { status: "safe", message: "<strong>10 janvier:</strong> TRÈS SÛR - Pas de gel nocturne. Conditions idéales." }
+        // Travel time offsets (hours from departure) for each route
+        const TRAVEL_OFFSETS = {
+            direct: {
+                loctudy: 0,
+                quimper: 0.5,
+                rennes: 1.5,
+                leMans: 4,
+                paris: 6,
+                ambleville: 6.5
+            },
+            cancale: {
+                // Day 1
+                loctudy: 0,
+                quimper: 0.5,
+                rennes: 1.5,
+                cancale: 2.75,
+                // Day 2 (would need separate handling)
+                avranches: 1,
+                caen: 3,
+                rouen: 5,
+                ambleville: 6.5
+            }
         };
+
+        // Cities on each route
+        const DIRECT_ROUTE_CITIES = ['loctudy', 'quimper', 'rennes', 'leMans', 'paris', 'ambleville'];
+        const CANCALE_ROUTE_CITIES = ['loctudy', 'quimper', 'rennes', 'cancale', 'avranches', 'caen', 'rouen', 'ambleville'];
 
         const cities = {
             loctudy: { name: "Loctudy", coords: [47.8344, -4.1714], type: "start" },
@@ -344,50 +366,135 @@
             ambleville: { name: "Ambleville", coords: [49.1456, 1.7008], type: "end" }
         };
 
-        const routeCancale = [
+        const routeCancaleCoords = [
             cities.loctudy.coords, cities.quimper.coords, [48.0897, -2.7614], cities.rennes.coords,
             [48.4500, -1.7500], cities.cancale.coords, cities.avranches.coords, cities.caen.coords,
             cities.rouen.coords, [49.0500, 1.4500], cities.ambleville.coords
         ];
 
-        const routeDirect = [
+        const routeDirectCoords = [
             cities.loctudy.coords, cities.quimper.coords, [47.9500, -3.0000], [47.8500, -2.0000],
             cities.rennes.coords, [48.0000, -0.8000], cities.leMans.coords, [48.3000, 0.8000],
             cities.paris.coords, cities.ambleville.coords
         ];
 
+        // State
         let currentDay = "jan3";
+        let currentDepartureHour = 11;
         let markers = {};
 
+        // Risk colors
+        const RISK_COLORS = {
+            safe: '#28a745',
+            caution: '#ffc107',
+            danger: '#dc3545'
+        };
+
+        // Initialize map
         const map = L.map('map').setView([48.3, -1.5], 6);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; OpenStreetMap contributors'
         }).addTo(map);
 
-        L.polyline(routeCancale, { color: '#17a2b8', weight: 4, opacity: 0.8 }).addTo(map);
-        L.polyline(routeDirect, { color: '#28a745', weight: 4, opacity: 0.8, dashArray: '10, 10' }).addTo(map);
+        // Create polylines with references for later color updates
+        let cancaleRouteLine = L.polyline(routeCancaleCoords, { color: '#17a2b8', weight: 4, opacity: 0.8 }).addTo(map);
+        let directRouteLine = L.polyline(routeDirectCoords, { color: '#28a745', weight: 4, opacity: 0.8, dashArray: '10, 10' }).addTo(map);
 
-        L.marker([48.5, -2.0], {
+        // Route labels (will be updated)
+        let cancaleLabel = L.marker([48.5, -2.0], {
             icon: L.divIcon({
                 className: 'route-label',
-                html: '<div style="background: #17a2b8; color: white; padding: 5px 12px; border-radius: 4px; font-size: 10.5px; font-weight: 500; text-transform: uppercase; letter-spacing: 1.5px; white-space: nowrap; font-family: Montserrat, sans-serif;">Via Cancale</div>',
+                html: '<div id="cancaleLabelDiv" style="background: #17a2b8; color: white; padding: 5px 12px; border-radius: 4px; font-size: 10.5px; font-weight: 500; text-transform: uppercase; letter-spacing: 1.5px; white-space: nowrap; font-family: Montserrat, sans-serif;">Via Cancale</div>',
                 iconSize: [110, 26]
             })
         }).addTo(map);
 
-        L.marker([47.9, -0.5], {
+        let directLabel = L.marker([47.9, -0.5], {
             icon: L.divIcon({
                 className: 'route-label',
-                html: '<div style="background: #28a745; color: white; padding: 5px 12px; border-radius: 4px; font-size: 10.5px; font-weight: 500; text-transform: uppercase; letter-spacing: 1.5px; white-space: nowrap; font-family: Montserrat, sans-serif;">Direct</div>',
+                html: '<div id="directLabelDiv" style="background: #28a745; color: white; padding: 5px 12px; border-radius: 4px; font-size: 10.5px; font-weight: 500; text-transform: uppercase; letter-spacing: 1.5px; white-space: nowrap; font-family: Montserrat, sans-serif;">Direct</div>',
                 iconSize: [70, 26]
             })
         }).addTo(map);
 
+        // Helper: Get arrival temp for a city
+        function getArrivalTemp(cityKey, day, departureHour) {
+            const offset = TRAVEL_OFFSETS.direct[cityKey] || 0;
+            const arrivalHour = Math.min(23, Math.floor(departureHour + offset));
+            const hourlyData = weatherData[day][cityKey]?.hourly;
+            if (!hourlyData || hourlyData[arrivalHour] === null) return null;
+            return hourlyData[arrivalHour];
+        }
+
+        // Helper: Calculate risk from temp and overnight
+        function calculateRisk(arrivalTemp, overnightLow, snow) {
+            if (snow > 0) return 'danger';
+            if (overnightLow !== null && overnightLow < -3) return 'danger';
+            if (arrivalTemp === null) return 'caution';
+            if (arrivalTemp < 0) return 'danger';
+            if (arrivalTemp < 3 || (overnightLow !== null && overnightLow < 0)) return 'caution';
+            return 'safe';
+        }
+
+        // Helper: Get risk label
+        function getRiskLabel(arrivalTemp, overnightLow, snow, precip) {
+            if (snow > 0) return `NEIGE ${snow}cm`;
+            if (overnightLow !== null && overnightLow < -4) return `Gel SÉVÈRE ${overnightLow}°C`;
+            if (precip > 0 && overnightLow !== null && overnightLow < 0) return 'VERGLAS!';
+            if (overnightLow !== null && overnightLow < -1) return `Gel ${overnightLow}°C`;
+            if (arrivalTemp !== null && arrivalTemp < 0) return 'Gel au passage';
+            if (overnightLow !== null && overnightLow < 0) return 'Gel léger';
+            if (arrivalTemp !== null && arrivalTemp > 8) return 'Parfait';
+            if (arrivalTemp !== null && arrivalTemp > 3) return 'Pas de gel';
+            return 'Prudence';
+        }
+
+        // Calculate route risk (worst city on route)
+        function getRouteRisk(routeCities, day, departureHour) {
+            let worstRisk = 'safe';
+            let worstCity = null;
+            let worstTemp = null;
+
+            for (const cityKey of routeCities) {
+                const weather = weatherData[day][cityKey];
+                if (!weather) continue;
+
+                const arrivalTemp = getArrivalTemp(cityKey, day, departureHour);
+                const risk = calculateRisk(arrivalTemp, weather.overnightLow, weather.snow);
+
+                if (risk === 'danger') {
+                    worstRisk = 'danger';
+                    worstCity = cityKey;
+                    worstTemp = arrivalTemp;
+                } else if (risk === 'caution' && worstRisk === 'safe') {
+                    worstRisk = 'caution';
+                    worstCity = cityKey;
+                    worstTemp = arrivalTemp;
+                }
+            }
+
+            return { risk: worstRisk, city: worstCity, temp: worstTemp };
+        }
+
+        // Update route line colors
+        function updateRouteColors() {
+            const directRisk = getRouteRisk(DIRECT_ROUTE_CITIES, currentDay, currentDepartureHour);
+            const cancaleRisk = getRouteRisk(CANCALE_ROUTE_CITIES, currentDay, currentDepartureHour);
+
+            directRouteLine.setStyle({ color: RISK_COLORS[directRisk.risk] });
+            cancaleRouteLine.setStyle({ color: RISK_COLORS[cancaleRisk.risk] });
+
+            // Update legend
+            document.getElementById('legendDirect').style.background = RISK_COLORS[directRisk.risk];
+            document.getElementById('legendCancale').style.background = RISK_COLORS[cancaleRisk.risk];
+        }
+
+        // Create marker icon
         function createIcon(type, risk) {
             let color, size;
             if (type === 'start') { color = '#28a745'; size = 16; }
             else if (type === 'end') { color = '#e83e8c'; size = 16; }
-            else { color = risk === 'safe' ? '#28a745' : risk === 'caution' ? '#ffc107' : '#dc3545'; size = 12; }
+            else { color = RISK_COLORS[risk] || '#28a745'; size = 12; }
             return L.divIcon({
                 className: 'custom-marker',
                 html: `<div style="width: ${size}px; height: ${size}px; background: ${color}; border: 2px solid white; border-radius: 50%; box-shadow: 0 1px 3px rgba(0,0,0,0.2);"></div>`,
@@ -395,75 +502,197 @@
             });
         }
 
+        // Get popup content with arrival temps
         function getPopupContent(cityKey) {
             const city = cities[cityKey];
             const weather = weatherData[currentDay][cityKey];
             const dayLabel = currentDay.replace('jan', '') + ' janvier';
-            let snowInfo = weather.snow > 0 ? `<div class="popup-snow">Neige: ${weather.snow} cm</div>` : '';
+            const arrivalTemp = getArrivalTemp(cityKey, currentDay, currentDepartureHour);
+            const risk = calculateRisk(arrivalTemp, weather.overnightLow, weather.snow);
+            const riskLabel = getRiskLabel(arrivalTemp, weather.overnightLow, weather.snow, weather.precip);
+
+            const arrivalOffset = TRAVEL_OFFSETS.direct[cityKey] || 0;
+            const arrivalHour = Math.floor(currentDepartureHour + arrivalOffset);
+
+            let arrivalText = arrivalTemp !== null ? `${arrivalTemp}°C` : 'N/A';
+            let overnightClass = weather.overnightLow < 0 ? 'warning' : '';
+            let snowInfo = weather.snow > 0 ? `<div class="popup-snow">❄️ Neige: ${weather.snow} cm</div>` : '';
+
             return `
                 <div class="popup-title">${city.name}</div>
-                <div class="popup-date">${dayLabel} 2026</div>
+                <div class="popup-date">${dayLabel} 2026 • Arrivée ~${arrivalHour}h</div>
                 <div class="popup-weather">
-                    <span class="popup-temp ${weather.risk}">${weather.high}° / ${weather.low}°C</span>
+                    <div class="popup-arrival ${risk}">À votre passage: ${arrivalText}</div>
+                    <div class="popup-overnight ${overnightClass}">Nuit précédente: ${weather.overnightLow}°C</div>
                     ${snowInfo}
-                    <div class="popup-risk ${weather.risk}">${weather.riskLabel}</div>
+                    <div class="popup-risk ${risk}">${riskLabel}</div>
                 </div>
             `;
         }
 
+        // Initialize markers
         function initMarkers() {
             Object.entries(cities).forEach(([key, city]) => {
                 const weather = weatherData[currentDay][key];
-                const marker = L.marker(city.coords, { icon: createIcon(city.type, weather.risk) }).addTo(map);
+                const arrivalTemp = getArrivalTemp(key, currentDay, currentDepartureHour);
+                const risk = calculateRisk(arrivalTemp, weather?.overnightLow, weather?.snow);
+                const marker = L.marker(city.coords, { icon: createIcon(city.type, risk) }).addTo(map);
                 marker.bindPopup(getPopupContent(key));
                 markers[key] = marker;
             });
         }
 
+        // Update all markers
         function updateMarkers() {
             Object.entries(cities).forEach(([key, city]) => {
                 const weather = weatherData[currentDay][key];
-                markers[key].setIcon(createIcon(city.type, weather.risk));
+                const arrivalTemp = getArrivalTemp(key, currentDay, currentDepartureHour);
+                const risk = calculateRisk(arrivalTemp, weather?.overnightLow, weather?.snow);
+                markers[key].setIcon(createIcon(city.type, risk));
                 markers[key].setPopupContent(getPopupContent(key));
             });
         }
 
+        // Get day risk status for button
+        function getDayRisk(day) {
+            const directRisk = getRouteRisk(DIRECT_ROUTE_CITIES, day, 11);
+            return directRisk.risk;
+        }
+
+        // Initialize day buttons
         function initDayButtons() {
             const container = document.getElementById('dayButtons');
             const days = ['jan3', 'jan4', 'jan5', 'jan6', 'jan7', 'jan8', 'jan9', 'jan10'];
             const labels = ['3 jan', '4 jan', '5 jan', '6 jan', '7 jan', '8 jan', '9 jan', '10 jan'];
-            const statuses = ['OK', 'Gel', 'Neige', 'Neige', 'PIRE', 'Regel', 'PM OK', 'SUR'];
+
             days.forEach((day, i) => {
-                const info = dayInfo[day];
+                const risk = getDayRisk(day);
                 const btn = document.createElement('button');
-                btn.className = `day-btn ${info.status}`;
+                btn.className = `day-btn ${risk}`;
+                btn.dataset.day = day;
                 if (day === currentDay) btn.classList.add('active');
-                btn.innerHTML = `<div class="day-name">${labels[i]}</div><div class="day-status">${statuses[i]}</div>`;
+
+                const statusText = risk === 'safe' ? 'OK' : risk === 'danger' ? 'DANGER' : 'PRUDENCE';
+                btn.innerHTML = `<div class="day-name">${labels[i]}</div><div class="day-status">${statusText}</div>`;
                 btn.addEventListener('click', () => selectDay(day));
                 container.appendChild(btn);
             });
         }
 
-        function selectDay(day) {
-            currentDay = day;
-            document.querySelectorAll('.day-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.closest('.day-btn').classList.add('active');
-            const info = dayInfo[day];
-            const banner = document.getElementById('dayInfo');
-            banner.className = `day-info ${info.status}`;
-            banner.innerHTML = info.message;
-            updateMarkers();
+        // Initialize departure time buttons
+        function initDepartureButtons() {
+            const container = document.getElementById('departureSelector');
+            const hours = [9, 10, 11, 12, 13, 14];
+
+            hours.forEach(hour => {
+                const btn = document.createElement('button');
+                btn.className = `departure-btn ${hour === currentDepartureHour ? 'active' : ''}`;
+                btn.textContent = `${hour}h00`;
+                btn.addEventListener('click', () => selectDepartureTime(hour));
+                container.appendChild(btn);
+            });
         }
 
-        const allPoints = [...routeCancale, ...routeDirect];
-        map.fitBounds(L.latLngBounds(allPoints).pad(0.1));
+        // Select day
+        function selectDay(day) {
+            currentDay = day;
+            document.querySelectorAll('.day-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.day === day) btn.classList.add('active');
+            });
+            updateAll();
+        }
 
+        // Select departure time
+        function selectDepartureTime(hour) {
+            currentDepartureHour = hour;
+            document.querySelectorAll('.departure-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.textContent === `${hour}h00`);
+            });
+            updateAll();
+        }
+
+        // Update day info banner
+        function updateDayInfo() {
+            const directRisk = getRouteRisk(DIRECT_ROUTE_CITIES, currentDay, currentDepartureHour);
+            const banner = document.getElementById('dayInfo');
+            const dayLabel = currentDay.replace('jan', '') + ' janvier';
+
+            let message = '';
+            if (directRisk.risk === 'safe') {
+                message = `<strong>${dayLabel}, départ ${currentDepartureHour}h:</strong> CONDITIONS FAVORABLES - Route directe recommandée.`;
+            } else if (directRisk.risk === 'caution') {
+                const cityName = cities[directRisk.city]?.name || '';
+                message = `<strong>${dayLabel}, départ ${currentDepartureHour}h:</strong> PRUDENCE - ${cityName} à ${directRisk.temp}°C. Vérifier les conditions.`;
+            } else {
+                const cityName = cities[directRisk.city]?.name || '';
+                message = `<strong>${dayLabel}, départ ${currentDepartureHour}h:</strong> DÉCONSEILLÉ - ${cityName} à ${directRisk.temp}°C. Risque de verglas.`;
+            }
+
+            banner.className = `day-info ${directRisk.risk}`;
+            banner.innerHTML = message;
+        }
+
+        // Update summary table
+        function updateSummaryTable() {
+            const tbody = document.getElementById('summaryBody');
+            const days = ['jan3', 'jan4', 'jan5', 'jan6', 'jan7', 'jan8', 'jan9', 'jan10'];
+            const dayLabels = ['3 janvier', '4 janvier', '5 janvier', '6 janvier', '7 janvier', '8 janvier', '9 janvier', '10 janvier'];
+
+            let html = '';
+            days.forEach((day, i) => {
+                const risk = getRouteRisk(DIRECT_ROUTE_CITIES, day, 11);
+                const verdictClass = risk.risk === 'safe' ? 'verdict-safe' : risk.risk === 'danger' ? 'verdict-danger' : 'verdict-caution';
+
+                let verdict = '', reason = '';
+                if (risk.risk === 'safe') {
+                    verdict = 'POSSIBLE';
+                    reason = 'Conditions favorables pour la route';
+                } else if (risk.risk === 'caution') {
+                    verdict = 'PRUDENCE';
+                    const cityName = cities[risk.city]?.name || '';
+                    reason = `${cityName} à ${risk.temp}°C - vérifier avant`;
+                } else {
+                    verdict = 'DÉCONSEILLÉ';
+                    const cityName = cities[risk.city]?.name || '';
+                    const weather = weatherData[day][risk.city];
+                    if (weather?.snow > 0) {
+                        reason = `Neige prévue (${weather.snow}cm)`;
+                    } else if (weather?.overnightLow < -3) {
+                        reason = `Gel sévère: ${weather.overnightLow}°C`;
+                    } else {
+                        reason = `Risque verglas - ${cityName}`;
+                    }
+                }
+
+                html += `<tr class="${risk.risk}"><td><strong>${dayLabels[i]}</strong></td><td class="${verdictClass}">${verdict}</td><td>${reason}</td></tr>`;
+            });
+
+            tbody.innerHTML = html;
+        }
+
+        // Update everything
+        function updateAll() {
+            updateMarkers();
+            updateRouteColors();
+            updateDayInfo();
+            updateSummaryTable();
+        }
+
+        // Toggle message
         function toggleMessage() {
             document.getElementById('messageContent').classList.toggle('hidden');
         }
 
+        // Fit map to routes
+        const allPoints = [...routeCancaleCoords, ...routeDirectCoords];
+        map.fitBounds(L.latLngBounds(allPoints).pad(0.1));
+
+        // Initialize
         initDayButtons();
+        initDepartureButtons();
         initMarkers();
+        updateAll();
     </script>
 </body>
 </html>
