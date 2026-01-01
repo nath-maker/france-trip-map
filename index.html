@@ -188,7 +188,7 @@
             </ul>
             <div class="signature">
                 <p>Bon voyage! Nathalie t'aime très fort.</p>
-                <p id="lastUpdated" style="font-size: 10px; color: #999; margin-top: 12px;">Données météo mises à jour automatiquement | Source: API Open-Meteo</p>
+                <p id="lastUpdated" style="font-size: 10px; color: #999; margin-top: 12px;">Données météo mises à jour: 2026-01-01 18:28 UTC | Source: API Open-Meteo</p>
             </div>
         </div>
     </div>
@@ -222,101 +222,101 @@
         // WEATHER_DATA_START
         const weatherData = {
             "jan3": {
-                loctudy: { high: 6.0, low: -0.3, precip: 0, snow: 0, risk: "safe", riskLabel: "Départ 11h OK" },
-                quimper: { high: 5.8, low: -0.5, precip: 0, snow: 0, risk: "safe", riskLabel: "Départ 11h OK" },
-                rennes: { high: 4.7, low: -2.6, precip: 0.8, snow: 0, risk: "safe", riskLabel: "Départ 11h OK" },
-                cancale: { high: 6.9, low: 1.3, precip: 0.4, snow: 0, risk: "safe", riskLabel: "Départ 11h OK" },
-                avranches: { high: 4.1, low: -1.5, precip: 0, snow: 0, risk: "safe", riskLabel: "Départ 11h OK" },
-                caen: { high: 5.0, low: 0.6, precip: 0, snow: 0, risk: "safe", riskLabel: "Départ 11h OK" },
-                leMans: { high: 4.5, low: -1.5, precip: 0, snow: 0, risk: "safe", riskLabel: "Départ 11h OK" },
-                rouen: { high: 3.7, low: -1.1, precip: 0, snow: 0, risk: "safe", riskLabel: "Départ 11h OK" },
-                paris: { high: 4.0, low: -1.0, precip: 0, snow: 0, risk: "safe", riskLabel: "Départ 11h OK" },
-                ambleville: { high: 2.9, low: -3.1, precip: 0, snow: 0, risk: "caution", riskLabel: "Gel -3°C nuit" }
+                loctudy: { high: 6.2, low: -1.0, precip: 0, snow: 0, risk: "caution", riskLabel: "Prudence" },
+                quimper: { high: 5.9, low: -1.3, precip: 0.4, snow: 0, risk: "danger", riskLabel: "Pluie + gel" },
+                rennes: { high: 5.5, low: -3.0, precip: 2.0, snow: 0, risk: "danger", riskLabel: "Pluie + gel" },
+                cancale: { high: 6.5, low: 4.4, precip: 0, snow: 0, risk: "safe", riskLabel: "Pas de gel" },
+                avranches: { high: 4.5, low: -1.6, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel -1.6°C" },
+                caen: { high: 5.3, low: 0.4, precip: 0, snow: 0, risk: "caution", riskLabel: "Gel léger" },
+                leMans: { high: 4.8, low: -3.0, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel -3.0°C" },
+                rouen: { high: 3.8, low: -0.6, precip: 0, snow: 0, risk: "caution", riskLabel: "Gel léger" },
+                paris: { high: 3.5, low: -1.3, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel -1.3°C" },
+                ambleville: { high: 2.8, low: -2.1, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel -2.1°C" }
             },
             "jan4": {
-                loctudy: { high: 5.8, low: -1.4, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel -1°C" },
-                quimper: { high: 5.0, low: -1.8, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel -2°C" },
-                rennes: { high: 3.9, low: -3.8, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel SÉVÈRE -4°C" },
-                cancale: { high: 4.7, low: -0.3, precip: 0, snow: 0, risk: "caution", riskLabel: "Gel léger" },
-                avranches: { high: 2.7, low: -4.2, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel SÉVÈRE -4°C" },
-                caen: { high: 3.9, low: -1.0, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel -1°C" },
-                leMans: { high: 3.5, low: -3.5, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel -4°C" },
-                rouen: { high: 2.7, low: -3.1, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel SÉVÈRE -3°C" },
-                paris: { high: 3.0, low: -3.0, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel -3°C" },
-                ambleville: { high: 2.1, low: -4.4, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel SÉVÈRE -4°C" }
+                loctudy: { high: 6.0, low: -1.5, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel -1.5°C" },
+                quimper: { high: 5.7, low: -2.0, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel -2.0°C" },
+                rennes: { high: 3.9, low: -4.0, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel -4.0°C" },
+                cancale: { high: 5.8, low: 0.1, precip: 0, snow: 0, risk: "caution", riskLabel: "Gel léger" },
+                avranches: { high: 2.7, low: -5.3, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel SÉVÈRE -5.3°C" },
+                caen: { high: 4.0, low: -2.0, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel -2.0°C" },
+                leMans: { high: 2.9, low: -7.4, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel SÉVÈRE -7.4°C" },
+                rouen: { high: 3.1, low: -3.2, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel -3.2°C" },
+                paris: { high: 2.2, low: -4.6, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel SÉVÈRE -4.6°C" },
+                ambleville: { high: 2.3, low: -5.2, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel SÉVÈRE -5.2°C" }
             },
             "jan5": {
-                loctudy: { high: 7.1, low: -1.4, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel nocturne" },
-                quimper: { high: 6.5, low: -1.5, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel nocturne" },
-                rennes: { high: 0.7, low: -4.2, precip: 2.4, snow: 1.7, risk: "danger", riskLabel: "NEIGE 1.7cm" },
-                cancale: { high: 0.5, low: -1.8, precip: 1.8, snow: 1.3, risk: "danger", riskLabel: "NEIGE 1.3cm" },
-                avranches: { high: -0.5, low: -5.6, precip: 9.6, snow: 6.7, risk: "danger", riskLabel: "NEIGE 6.7cm!" },
-                caen: { high: 1.2, low: -1.6, precip: 4.8, snow: 2.5, risk: "danger", riskLabel: "NEIGE 2.5cm" },
-                leMans: { high: 1.0, low: -3.5, precip: 3.0, snow: 2.0, risk: "danger", riskLabel: "NEIGE 2cm" },
-                rouen: { high: 1.1, low: -2.9, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel -3°C" },
-                paris: { high: 1.5, low: -3.0, precip: 1.0, snow: 0.5, risk: "danger", riskLabel: "Neige possible" },
-                ambleville: { high: -0.4, low: -3.8, precip: 1.2, snow: 0.8, risk: "danger", riskLabel: "NEIGE + gel" }
+                loctudy: { high: 6.9, low: -1.5, precip: 2.3, snow: 0, risk: "danger", riskLabel: "Pluie + gel" },
+                quimper: { high: 5.6, low: -2.0, precip: 3.5, snow: 0, risk: "danger", riskLabel: "Pluie + gel" },
+                rennes: { high: 3.7, low: -4.4, precip: 2.0, snow: 0.3, risk: "danger", riskLabel: "NEIGE 0.3cm" },
+                cancale: { high: 5.3, low: -0.2, precip: 10.5, snow: 0, risk: "caution", riskLabel: "Gel léger" },
+                avranches: { high: 3.9, low: -4.5, precip: 1.4, snow: 0.5, risk: "danger", riskLabel: "NEIGE 0.5cm" },
+                caen: { high: 4.5, low: -2.2, precip: 2.6, snow: 0, risk: "danger", riskLabel: "Pluie + gel" },
+                leMans: { high: 2.1, low: -8.6, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel SÉVÈRE -8.6°C" },
+                rouen: { high: 3.1, low: -3.8, precip: 1.4, snow: 1.0, risk: "danger", riskLabel: "NEIGE 1.0cm" },
+                paris: { high: 2.6, low: -6.2, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel SÉVÈRE -6.2°C" },
+                ambleville: { high: 2.6, low: -5.6, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel SÉVÈRE -5.6°C" }
             },
             "jan6": {
-                loctudy: { high: 3.5, low: -0.5, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel nocturne" },
-                quimper: { high: 3.0, low: -0.8, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel nocturne" },
-                rennes: { high: 1.8, low: -3.8, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel -4°C" },
-                cancale: { high: 2.6, low: -2.3, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel -2°C" },
-                avranches: { high: 1.9, low: -6.3, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel SÉVÈRE -6°C" },
-                caen: { high: 1.4, low: -3.4, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel -3°C" },
-                leMans: { high: 1.5, low: -4.0, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel -4°C" },
-                rouen: { high: 0.5, low: -4.9, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel SÉVÈRE -5°C" },
-                paris: { high: 0.8, low: -4.5, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel SÉVÈRE -5°C" },
-                ambleville: { high: 0.3, low: -4.4, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel SÉVÈRE -4°C" }
+                loctudy: { high: 6.6, low: -0.6, precip: 0.5, snow: 0, risk: "caution", riskLabel: "Gel léger" },
+                quimper: { high: 5.6, low: -1.2, precip: 0.5, snow: 0, risk: "danger", riskLabel: "Pluie + gel" },
+                rennes: { high: 2.5, low: -3.6, precip: 1.2, snow: 0, risk: "danger", riskLabel: "VERGLAS!" },
+                cancale: { high: 4.8, low: 2.3, precip: 3.9, snow: 0, risk: "safe", riskLabel: "Pas de gel" },
+                avranches: { high: 2.3, low: -4.6, precip: 3.4, snow: 2.0, risk: "danger", riskLabel: "NEIGE 2.0cm" },
+                caen: { high: 2.3, low: -3.7, precip: 1.0, snow: 0, risk: "danger", riskLabel: "VERGLAS!" },
+                leMans: { high: 1.4, low: -2.8, precip: 2.4, snow: 1.7, risk: "danger", riskLabel: "NEIGE 1.7cm" },
+                rouen: { high: 0.9, low: -1.5, precip: 7.0, snow: 4.9, risk: "danger", riskLabel: "NEIGE 4.9cm" },
+                paris: { high: -0.4, low: -2.0, precip: 2.4, snow: 1.7, risk: "danger", riskLabel: "NEIGE 1.7cm" },
+                ambleville: { high: -0.1, low: -1.7, precip: 3.6, snow: 2.5, risk: "danger", riskLabel: "NEIGE 2.5cm" }
             },
             "jan7": {
-                loctudy: { high: 6.1, low: -2.1, precip: 3.6, snow: 0, risk: "danger", riskLabel: "Pluie + gel" },
-                quimper: { high: 5.5, low: -2.5, precip: 3.0, snow: 0, risk: "danger", riskLabel: "Pluie + gel" },
-                rennes: { high: 0.3, low: -6.2, precip: 3.6, snow: 2.5, risk: "danger", riskLabel: "NEIGE 2.5cm" },
-                cancale: { high: 0.2, low: -5.6, precip: 4.8, snow: 3.4, risk: "danger", riskLabel: "NEIGE 3.4cm" },
-                avranches: { high: -0.7, low: -6.3, precip: 4.8, snow: 3.4, risk: "danger", riskLabel: "NEIGE 3.4cm" },
-                caen: { high: 1.5, low: -4.1, precip: 2.4, snow: 1.7, risk: "danger", riskLabel: "NEIGE 1.7cm" },
-                leMans: { high: 0.5, low: -5.0, precip: 3.0, snow: 2.0, risk: "danger", riskLabel: "NEIGE 2cm" },
-                rouen: { high: 0.8, low: -5.4, precip: 3.6, snow: 1.7, risk: "danger", riskLabel: "NEIGE 1.7cm" },
-                paris: { high: 0.5, low: -5.0, precip: 2.5, snow: 1.5, risk: "danger", riskLabel: "NEIGE + gel" },
-                ambleville: { high: -0.8, low: -5.5, precip: 1.4, snow: 1.0, risk: "danger", riskLabel: "NEIGE + gel" }
+                loctudy: { high: 7.8, low: -1.4, precip: 2.4, snow: 0, risk: "danger", riskLabel: "Pluie + gel" },
+                quimper: { high: 7.5, low: -1.6, precip: 2.4, snow: 0, risk: "danger", riskLabel: "Pluie + gel" },
+                rennes: { high: 4.5, low: -6.6, precip: 1.2, snow: 0, risk: "danger", riskLabel: "VERGLAS!" },
+                cancale: { high: 6.2, low: 0.1, precip: 3.1, snow: 0, risk: "caution", riskLabel: "Gel léger" },
+                avranches: { high: 3.4, low: -6.0, precip: 1.9, snow: 0.8, risk: "danger", riskLabel: "NEIGE 0.8cm" },
+                caen: { high: 1.7, low: -4.3, precip: 2.4, snow: 0.8, risk: "danger", riskLabel: "NEIGE 0.8cm" },
+                leMans: { high: -0.9, low: -3.8, precip: 1.2, snow: 0.8, risk: "danger", riskLabel: "NEIGE 0.8cm" },
+                rouen: { high: -0.1, low: -2.6, precip: 2.4, snow: 1.7, risk: "danger", riskLabel: "NEIGE 1.7cm" },
+                paris: { high: -0.3, low: -1.9, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel -1.9°C" },
+                ambleville: { high: -0.5, low: -2.3, precip: 1.2, snow: 0.8, risk: "danger", riskLabel: "NEIGE 0.8cm" }
             },
             "jan8": {
-                loctudy: { high: 12.5, low: 1.6, precip: 0, snow: 0, risk: "safe", riskLabel: "Journée OK" },
-                quimper: { high: 12.0, low: 1.2, precip: 0, snow: 0, risk: "safe", riskLabel: "Journée OK" },
-                rennes: { high: 10.9, low: -5.5, precip: 0, snow: 0, risk: "danger", riskLabel: "REGEL -6°C!" },
-                cancale: { high: 10.7, low: -3.9, precip: 0, snow: 0, risk: "danger", riskLabel: "REGEL -4°C!" },
-                avranches: { high: 10.2, low: -4.5, precip: 0, snow: 0, risk: "danger", riskLabel: "REGEL -5°C!" },
-                caen: { high: 10.9, low: -2.4, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel -2°C nuit" },
-                leMans: { high: 10.5, low: -3.5, precip: 0, snow: 0, risk: "danger", riskLabel: "REGEL -4°C!" },
-                rouen: { high: 9.8, low: -5.8, precip: 0, snow: 0, risk: "danger", riskLabel: "REGEL -6°C!" },
-                paris: { high: 9.5, low: -4.0, precip: 0, snow: 0, risk: "danger", riskLabel: "REGEL -4°C!" },
-                ambleville: { high: 7.9, low: -3.9, precip: 1.0, snow: 0.7, risk: "danger", riskLabel: "VERGLAS!" }
+                loctudy: { high: 7.6, low: 2.9, precip: 3.6, snow: 0, risk: "safe", riskLabel: "Pas de gel" },
+                quimper: { high: 7.4, low: 3.0, precip: 3.6, snow: 0, risk: "safe", riskLabel: "Pas de gel" },
+                rennes: { high: 4.9, low: -0.4, precip: 0, snow: 0, risk: "caution", riskLabel: "Gel léger" },
+                cancale: { high: 6.9, low: 4.1, precip: 2.9, snow: 0, risk: "safe", riskLabel: "Pas de gel" },
+                avranches: { high: 4.3, low: -0.5, precip: 1.7, snow: 0, risk: "caution", riskLabel: "Gel léger" },
+                caen: { high: 4.2, low: -0.7, precip: 0, snow: 0, risk: "caution", riskLabel: "Gel léger" },
+                leMans: { high: 3.0, low: -3.1, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel -3.1°C" },
+                rouen: { high: 3.2, low: -2.1, precip: 0, snow: 0, risk: "danger", riskLabel: "Gel -2.1°C" },
+                paris: { high: 2.6, low: -1.7, precip: 1.2, snow: 0, risk: "danger", riskLabel: "Pluie + gel" },
+                ambleville: { high: 2.3, low: -3.4, precip: 1.2, snow: 0, risk: "danger", riskLabel: "VERGLAS!" }
             },
             "jan9": {
-                loctudy: { high: 12.1, low: 8.1, precip: 1.2, snow: 0, risk: "safe", riskLabel: "Pas de gel" },
-                quimper: { high: 11.5, low: 7.8, precip: 1.0, snow: 0, risk: "safe", riskLabel: "Pas de gel" },
-                rennes: { high: 11.8, low: 5.3, precip: 1.2, snow: 0, risk: "safe", riskLabel: "Pas de gel" },
-                cancale: { high: 11.0, low: 7.4, precip: 3.1, snow: 0, risk: "safe", riskLabel: "Pas de gel" },
-                avranches: { high: 10.3, low: 5.8, precip: 4.3, snow: 0, risk: "safe", riskLabel: "Pas de gel" },
-                caen: { high: 11.0, low: 4.9, precip: 1.2, snow: 0, risk: "safe", riskLabel: "Pas de gel" },
-                leMans: { high: 10.5, low: 5.5, precip: 1.0, snow: 0, risk: "safe", riskLabel: "Pas de gel" },
-                rouen: { high: 11.1, low: 4.5, precip: 1.2, snow: 0, risk: "safe", riskLabel: "Pas de gel" },
-                paris: { high: 10.0, low: 5.0, precip: 0.5, snow: 0, risk: "safe", riskLabel: "Pas de gel" },
-                ambleville: { high: 9.6, low: 4.1, precip: 0, snow: 0, risk: "safe", riskLabel: "Pas de gel" }
+                loctudy: { high: 11.7, low: 6.7, precip: 4.8, snow: 0, risk: "safe", riskLabel: "Parfait" },
+                quimper: { high: 11.4, low: 6.2, precip: 4.8, snow: 0, risk: "safe", riskLabel: "Parfait" },
+                rennes: { high: 11.5, low: 1.4, precip: 6.0, snow: 0, risk: "caution", riskLabel: "Gel léger" },
+                cancale: { high: 9.3, low: 5.1, precip: 6.0, snow: 0, risk: "safe", riskLabel: "Parfait" },
+                avranches: { high: 8.6, low: 1.0, precip: 6.0, snow: 0, risk: "caution", riskLabel: "Gel léger" },
+                caen: { high: 9.3, low: 2.0, precip: 6.0, snow: 0, risk: "caution", riskLabel: "Gel léger" },
+                leMans: { high: 8.7, low: -0.1, precip: 6.0, snow: 0, risk: "caution", riskLabel: "Gel léger" },
+                rouen: { high: 4.5, low: -0.8, precip: 7.2, snow: 0, risk: "caution", riskLabel: "Gel léger" },
+                paris: { high: 5.2, low: -1.0, precip: 7.2, snow: 0, risk: "danger", riskLabel: "Pluie + gel" },
+                ambleville: { high: 3.7, low: -2.4, precip: 7.2, snow: 0, risk: "danger", riskLabel: "Pluie + gel" }
             },
             "jan10": {
-                loctudy: { high: 9.1, low: 5.9, precip: 1.2, snow: 0, risk: "safe", riskLabel: "Parfait" },
-                quimper: { high: 9.0, low: 5.5, precip: 1.0, snow: 0, risk: "safe", riskLabel: "Parfait" },
-                rennes: { high: 7.0, low: 3.4, precip: 1.2, snow: 0, risk: "safe", riskLabel: "Parfait" },
-                cancale: { high: 7.8, low: 4.9, precip: 4.1, snow: 0, risk: "safe", riskLabel: "Parfait" },
-                avranches: { high: 6.8, low: 2.7, precip: 4.1, snow: 0, risk: "safe", riskLabel: "Parfait" },
-                caen: { high: 5.6, low: 3.4, precip: 4.8, snow: 0, risk: "safe", riskLabel: "Parfait" },
-                leMans: { high: 6.5, low: 2.5, precip: 3.0, snow: 0, risk: "safe", riskLabel: "Parfait" },
-                rouen: { high: 5.9, low: 2.7, precip: 1.2, snow: 0, risk: "safe", riskLabel: "Parfait" },
-                paris: { high: 6.0, low: 2.5, precip: 1.0, snow: 0, risk: "safe", riskLabel: "Parfait" },
-                ambleville: { high: 3.7, low: 0.4, precip: 6.0, snow: 0.8, risk: "safe", riskLabel: "OK, pluie" }
-            }
+                loctudy: { high: 9.6, low: 4.6, precip: 0, snow: 0, risk: "safe", riskLabel: "Parfait" },
+                quimper: { high: 9.4, low: 4.2, precip: 0, snow: 0, risk: "safe", riskLabel: "Parfait" },
+                rennes: { high: 8.4, low: 2.9, precip: 0, snow: 0, risk: "safe", riskLabel: "Parfait" },
+                cancale: { high: 8.5, low: 4.7, precip: 0, snow: 0, risk: "safe", riskLabel: "Parfait" },
+                avranches: { high: 7.1, low: 1.9, precip: 0, snow: 0, risk: "caution", riskLabel: "Gel léger" },
+                caen: { high: 7.3, low: 1.9, precip: 0, snow: 0, risk: "caution", riskLabel: "Gel léger" },
+                leMans: { high: 6.6, low: 1.6, precip: 0, snow: 0, risk: "caution", riskLabel: "Gel léger" },
+                rouen: { high: 5.7, low: 0.6, precip: 0, snow: 0, risk: "caution", riskLabel: "Gel léger" },
+                paris: { high: 4.6, low: 1.2, precip: 0, snow: 0, risk: "caution", riskLabel: "Gel léger" },
+                ambleville: { high: 4.1, low: -0.4, precip: 0, snow: 0, risk: "caution", riskLabel: "Gel léger" }
+            },
         };
         // WEATHER_DATA_END
 
