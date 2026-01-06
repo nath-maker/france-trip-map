@@ -145,6 +145,9 @@
             font-family: 'Segoe UI', sans-serif; font-size: 12px; color: #888; font-style: italic;
         }
         .signature p { color: #888; font-size: 12px; margin-bottom: 8px; }
+        .translation { font-style: italic; font-size: 11px; color: #999; margin-top: 2px; display: block; }
+        .header .translation { font-size: 12px; margin-top: 4px; letter-spacing: 1px; }
+        .legend .translation { font-size: 11px; margin-left: 54px; margin-top: -8px; margin-bottom: 12px; }
         @media (max-width: 600px) {
             .header, .controls-section, .legend, .footer, .message-section, .day-info { padding-left: 20px; padding-right: 20px; }
             #map { height: 45vh; }
@@ -159,32 +162,32 @@
 </head>
 <body>
     <div class="header">
-        <h1>Trajet Pointe du Raz - Gagny</h1>
-        <div class="subtitle">Janvier 2026 - Guide de voyage hivernal préparé par Nathalie</div>
+        <h1>Trajet Pointe du Raz - Gagny<span class="translation">Route from Pointe du Raz to Gagny</span></h1>
+        <div class="subtitle">Janvier 2026 - Guide de voyage hivernal préparé par Nathalie<span class="translation">January 2026 - Winter travel guide prepared by Nathalie</span></div>
     </div>
 
     <div class="message-section">
-        <button class="toggle-message" onclick="toggleMessage()">Afficher / Masquer le message</button>
+        <button class="toggle-message" onclick="toggleMessage()">Afficher / Masquer le message<span class="translation">Show / Hide message</span></button>
         <div class="message-content" id="messageContent">
-            <h2>Cher Papa,</h2>
-            <p>Je suis Claude, l'assistant IA de Nathalie - et comme toi, je m'appelle Claude! Elle m'a demandé de t'aider à planifier ton trajet en toute sécurité.</p>
-            <h3 class="danger-title">Le Danger Principal: Le Regel</h3>
-            <p>Tu as <strong>tout à fait raison</strong> de t'inquiéter du <span class="highlight">regel</span> (pluie ou neige suivie de gel). Cette carte montre la température <strong>à l'heure où tu passerais</strong> dans chaque ville, PLUS la température de la nuit précédente pour détecter le risque de verglas.</p>
-            <h3>Mes Recommandations</h3>
+            <h2>Cher Papa,<span class="translation">Dear Dad,</span></h2>
+            <p>Je suis Claude, l'assistant IA de Nathalie - et comme toi, je m'appelle Claude! Elle m'a demandé de t'aider à planifier ton trajet en toute sécurité.<span class="translation">I'm Claude, Nathalie's AI assistant - and like you, my name is Claude! She asked me to help you plan your trip safely.</span></p>
+            <h3 class="danger-title">Le Danger Principal: Le Regel<span class="translation">The Main Danger: Black Ice</span></h3>
+            <p>Tu as <strong>tout à fait raison</strong> de t'inquiéter du <span class="highlight">regel</span> (pluie ou neige suivie de gel). Cette carte montre la température <strong>à l'heure où tu passerais</strong> dans chaque ville, PLUS la température de la nuit précédente pour détecter le risque de verglas.<span class="translation">You are absolutely right to worry about "regel" (rain or snow followed by frost). This map shows the temperature at the time you would pass through each city, PLUS the overnight temperature to detect black ice risk.</span></p>
+            <h3>Mes Recommandations<span class="translation">My Recommendations</span></h3>
             <table class="summary-table" id="summaryTable">
                 <thead><tr><th>Date de départ</th><th>Verdict</th><th>Pourquoi</th></tr></thead>
                 <tbody id="summaryBody">
                     <!-- Generated dynamically by JavaScript -->
                 </tbody>
             </table>
-            <h3>Avant de partir</h3>
-            <p>Consulte ces sites le matin du départ:</p>
+            <h3>Avant de partir<span class="translation">Before you leave</span></h3>
+            <p>Consulte ces sites le matin du départ:<span class="translation">Check these sites on the morning of departure:</span></p>
             <ul>
                 <li><a href="https://vigilance.meteofrance.fr" target="_blank">Vigilance Météo France</a></li>
                 <li><a href="https://www.bison-fute.gouv.fr" target="_blank">Bison Futé</a></li>
             </ul>
             <div class="signature">
-                <p>Bon voyage! Nathalie t'aime très fort.</p>
+                <p>Bon voyage! Nathalie t'aime très fort.<span class="translation">Safe travels! Nathalie loves you very much.</span></p>
                 <p id="lastUpdated" style="font-size: 10px; color: #999; margin-top: 12px;">Données météo mises à jour: 2026-01-01 21:28 UTC | Source: API Open-Meteo</p>
             </div>
         </div>
@@ -193,11 +196,11 @@
     <div class="controls-section">
         <div class="controls-row">
             <div class="control-group">
-                <h3>Jour de départ</h3>
+                <h3>Jour de départ<span class="translation">Departure day</span></h3>
                 <div class="day-buttons" id="dayButtons"></div>
             </div>
             <div class="control-group">
-                <h3>Heure de départ</h3>
+                <h3>Heure de départ<span class="translation">Departure time</span></h3>
                 <div class="departure-selector" id="departureSelector"></div>
             </div>
         </div>
@@ -210,9 +213,11 @@
     <div id="map"></div>
 
     <div class="legend">
-        <h3>Routes (couleur = risque du jour)</h3>
+        <h3>Routes (couleur = risque du jour)<span class="translation">Routes (color = daily risk)</span></h3>
         <div class="legend-item"><div class="legend-line" id="legendCancale" style="background: #17a2b8;"></div><span><strong>Option A:</strong> Via Dinan (2 jours, 600 km)</span></div>
+        <div class="translation">Via Dinan (2 days, 600 km)</div>
         <div class="legend-item"><div class="legend-line" id="legendDirect" style="background: #28a745;"></div><span><strong>Option B:</strong> Direct via Rennes-Le Mans (1 jour, 580 km)</span></div>
+        <div class="translation">Direct via Rennes-Le Mans (1 day, 580 km)</div>
     </div>
 
     <div class="footer">
